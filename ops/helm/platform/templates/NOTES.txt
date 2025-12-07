@@ -1,0 +1,24 @@
+1. Install
+
+  helm upgrade --install platform {{ .Chart.Name }} \
+    -n {{ .Values.namespace }} --create-namespace \
+    --set backend.image.repository=REPO/backend --set backend.image.tag=TAG \
+    --set frontend.image.repository=REPO/frontend --set frontend.image.tag=TAG \
+    --set backend.secret.DJANGO_SECRET_KEY=CHANGE_ME \
+    --set backend.secret.DJANGO_API_KEY=SET_YOUR_KEY
+
+2. Services
+
+  Backend:   platform-backend.{{ .Values.namespace }}.svc.cluster.local:{{ .Values.backend.service.port }}
+  Frontend:  platform-frontend.{{ .Values.namespace }}.svc.cluster.local:{{ .Values.frontend.service.port }}
+
+3. Ingress (optional)
+
+  Enable with --set ingress.enabled=true and set hosts. Verify DNS and TLS.
+
+4. Health
+
+  kubectl -n {{ .Values.namespace }} get pods,svc,ingress
+  kubectl -n {{ .Values.namespace }} logs deploy/platform-backend -f
+
+

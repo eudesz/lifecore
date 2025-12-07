@@ -1,0 +1,63 @@
+namespace: platform
+
+backend:
+  image:
+    repository: ghcr.io/your-org/platform-backend
+    tag: latest
+    pullPolicy: IfNotPresent
+  replicas: 1
+  service:
+    type: ClusterIP
+    port: 8000
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+  env:
+    DJANGO_DEBUG: "false"
+    SECURE_SSL_REDIRECT: "true"
+    FEATURE_RAG: "true"
+    FEATURE_PROACTIVITY: "true"
+    DB_SSL_REQUIRE: "false"
+  secret:
+    DJANGO_SECRET_KEY: "change-me"
+    DJANGO_API_KEY: "set-a-strong-api-key"
+    SENTRY_DSN: ""
+    DATABASE_URL: ""
+
+frontend:
+  image:
+    repository: ghcr.io/your-org/platform-frontend
+    tag: latest
+    pullPolicy: IfNotPresent
+  replicas: 1
+  service:
+    type: ClusterIP
+    port: 3000
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 300m
+      memory: 256Mi
+  env:
+    NEXT_PUBLIC_PLATFORM_BACKEND_ORIGIN: "http://platform-backend:8000"
+    NEXT_PUBLIC_PLATFORM_API_KEY: ""
+
+ingress:
+  enabled: false
+  className: ""
+  hosts:
+    frontend:
+      host: frontend.local
+      path: /
+    backend:
+      host: api.local
+      path: /
+  tls: []
+
+

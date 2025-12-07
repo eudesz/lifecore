@@ -1,0 +1,12 @@
+.next
+node_modules
+.env*
+.turbo
+.vercel
+dist
+.git
+.github
+npm-debug.log*
+yarn-error.log
+
+

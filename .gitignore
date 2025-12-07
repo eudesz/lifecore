@@ -1,0 +1,32 @@
+# General
+.DS_Store
+*.log
+.logs/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+env/
+.env
+db.sqlite3
+*.sqlite3
+
+# Node / Frontend
+node_modules/
+.next/
+out/
+build/
+dist/
+.npm/
+*.local
+
+# Editor
+.vscode/
+.idea/
+*.swp
+.cursor/
+
+# Project Specific
+sample_data/full_history/

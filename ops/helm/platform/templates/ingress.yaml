@@ -1,0 +1,37 @@
+{{- if .Values.ingress.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: platform-ingress
+  namespace: {{ .Values.namespace }}
+  annotations:
+    {{- if .Values.ingress.className }}
+    kubernetes.io/ingress.class: {{ .Values.ingress.className | quote }}
+    {{- end }}
+spec:
+  rules:
+    - host: {{ .Values.ingress.hosts.frontend.host }}
+      http:
+        paths:
+          - path: {{ .Values.ingress.hosts.frontend.path }}
+            pathType: Prefix
+            backend:
+              service:
+                name: platform-frontend
+                port:
+                  number: {{ .Values.frontend.service.port }}
+    - host: {{ .Values.ingress.hosts.backend.host }}
+      http:
+        paths:
+          - path: {{ .Values.ingress.hosts.backend.path }}
+            pathType: Prefix
+            backend:
+              service:
+                name: platform-backend
+                port:
+                  number: {{ .Values.backend.service.port }}
+  tls:
+    {{- toYaml .Values.ingress.tls | nindent 4 }}
+{{- end }}
+
+

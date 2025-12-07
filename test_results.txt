@@ -1,0 +1,359 @@
+======================================
+QuantIA - Test de Prompts por API
+======================================
+
+======================================
+PROMPT 1
+======================================
+Pregunta: ¿Cuáles fueron mis últimas consultas de 2024? Dame un resumen breve.
+
+Enviando request...
+✅ RESPUESTA RECIBIDA
+
+Categoría detectada: informational
+
+Respuesta:
+{
+  "status": "success",
+  "category": "informational",
+  "final_text": "Últimas consultas (2024):\n- 2024-09-10 — Consulta de control\n  Consulta de control: El paciente refiere cansancio y dificultades para adherirse al plan. Se refuerza educación y se ajusta monitoreo.\n- 2024-03-10 — Consulta de control\n  Consulta de control: El paciente refiere cansancio y dificultades para adherirse al plan. Se refuerza educación y se ajusta monitoreo.",
+  "used_agents": [
+    "informational"
+  ],
+  "safety_flags": [
+    "no_diagnosis"
+  ],
+  "references": [],
+  "conversation_id": "3a1ef7ba-93fb-45df-99a4-a4878d18fb49"
+}
+
+Referencias: 0
+
+
+======================================
+PROMPT 2
+======================================
+Pregunta: ¿Qué tratamientos activos tuve entre 2011 y 2018? Incluye inicios y ajustes.
+
+Enviando request...
+✅ RESPUESTA RECIBIDA
+
+Categoría detectada: treatment
+
+Respuesta:
+{
+  "status": "success",
+  "category": "treatment",
+  "final_text": "Tratamientos en el contexto seleccionado:\nActivos durante el período (pueden haber iniciado antes):\n- 2010-11-14 — Metformina 500mg · 500mg 2x/day · condición: Diabetes · estado: active\n- 2010-12-16 — Metformina 500mg · 500mg 2x/day · condición: Diabetes · estado: active\n- 2011-01-17 — Metformina 500mg · 500mg 2x/day · condición: Diabetes · estado: active\n- 2011-02-16 — Metformina 500mg · 500mg 2x/day · condición: Diabetes · estado: active\n- 2011-03-18 — Metformina 500mg · 500mg 2x/day · condición: Diabetes · estado: active\n- 2011-04-19 — Metformina 500mg · 500mg 2x/day · condición: Diabetes · estado: active\n- 2011-05-19 — Metformina 500mg · 500mg 2x/day · condición: Diabetes · estado: active\n- 2011-06-20 — Metformina 500mg · 500mg 2x/day · condición: Diabetes · estado: active\n- 2011-07-18 — Metformina 500mg · 500mg 2x/day · condición: Diabetes · estado: active\n- 2011-08-16 — Metformina 500mg · 500mg 2x/day · condición: Diabetes · estado: active\n\nIniciados en el período:\n- 2010-11-14 — Metformina 500mg · 500mg 2x/day · condición: Diabetes · estado: active\n- 2010-12-16 — Metformina 500mg · 500mg 2x/day · condición: Diabetes · estado: active\n- 2011-01-17 — Metformina 500mg · 500mg 2x/day · condición: Diabetes · estado: active\n- 2011-02-16 — Metformina 500mg · 500mg 2x/day · condición: Diabetes · estado: active\n- 2011-03-18 — Metformina 500mg · 500mg 2x/day · condición: Diabetes · estado: active\n- 2011-04-19 — Metformina 500mg · 500mg 2x/day · condición: Diabetes · estado: active\n- 2011-05-19 — Metformina 500mg · 500mg 2x/day · condición: Diabetes · estado: active\n- 2011-06-20 — Metformina 500mg · 500mg 2x/day · condición: Diabetes · estado: active\n- 2011-07-18 — Metformina 500mg · 500mg 2x/day · condición: Diabetes · estado: active\n- 2011-08-16 — Metformina 500mg · 500mg 2x/day · condición: Diabetes · estado: active\n\nEventos de tratamiento:\n- 2010-11-14 — Inicio Metformina 500mg\n- 2010-12-16 — Inicio Metformina 500mg\n- 2011-01-17 — Inicio Metformina 500mg\n- 2011-02-16 — Inicio Metformina 500mg\n- 2011-03-18 — Inicio Metformina 500mg",
+  "used_agents": [
+    "treatment"
+  ],
+  "safety_flags": [
+    "no_diagnosis"
+  ],
+  "references": [
+    {
+      "title": "Entrevista anual",
+      "source": "synthetic",
+      "snippet": "Entrevista médica anual: El paciente reporta cambios en la dieta, incremento leve de peso, y adherencia parcial a metformina desde el último año. Meta: mejorar control glucémico.",
+      "score": 0.836,
+      "content": "Entrevista médica anual: El paciente reporta cambios en la dieta, incremento leve de peso, y adherencia parcial a metformina desde el último año. Meta: mejorar control glucémico."
+    }
+  ],
+  "conversation_id": "0214dc39-0810-4c06-90e6-4417f9e56f34"
+}
+
+Referencias: 1
+
+
+======================================
+PROMPT 3
+======================================
+Pregunta: ¿Cómo evolucionó mi glucosa entre 2019 y 2024? Promedio y tendencia.
+
+Enviando request...
+✅ RESPUESTA RECIBIDA
+
+Categoría detectada: temporal
+
+Respuesta:
+{
+  "status": "success",
+  "category": "temporal",
+  "final_text": "Entre 2019 y 2024, tus niveles de glucosa han mostrado una tendencia ascendente. Tu primer valor registrado en este periodo es de 95.0 mg/dL en noviembre de 2005, mientras que el último valor registrado es de 127.3 mg/dL en noviembre de 2025. La media móvil reciente es de 241.13 mg/dL, lo que sugiere un aumento significativo en tus niveles de glucosa.\n\nEl cambio promedio durante este tiempo ha sido de 146.8 mg/dL, lo que equivale a un incremento del 155.6%. Esto indica que tus niveles de glucosa han ido en aumento notablemente. Además, se han registrado varios valores atípicos que superan el umbral de 2.0 en la escala Z, lo que podría reflejar episodios de glucosa significativamente más alta en ciertas fechas.\n\nSi comparamos esto con los valores de HbA1c, que indican un control glucémico excelente con promedios estimados de glucosa de 111.0 mg/dL y 116.7 mg/dL en los últimos dos análisis, parece que, aunque hay un aumento en las lecturas de glucosa, el control en los últimos meses ha sido adecuado [2][3].",
+  "used_agents": [
+    "temporal"
+  ],
+  "safety_flags": [
+    "no_diagnosis"
+  ],
+  "references": [
+    {
+      "title": "Reporte Mensual de Glucosa - September 2023",
+      "source": "glucose_report_27",
+      "snippet": "a de meta  Postdesayuno (2h):   Promedio: 159.6 mg/dL   ✓ Controlado  Precomida:   Promedio: 121.7 mg/dL  Postcomida (2h):   Promedio: 121.6 mg/dL   ✓ Dentro de meta (<180)  Precena:   Promedio: 116.2 mg/dL  Nocturno (3 AM):   Promedio: 104.7 mg/dL  ══════════════════════════════════════════════════",
+      "score": 0.729,
+      "content": "REPORTE MENSUAL DE MONITOREO DE GLUCOSA\nPeriodo: 20/08/2023 - 19/09/2023\nPaciente: Alexander (demo-alex)\nGenerado: 19 de September de 2023\n\n═══════════════════════════════════════════════════════════════\n\n📊 ESTADÍSTICAS GENERALES\n\nTotal de mediciones: 4\nPromedio general: 118.0 mg/dL\nDesviación estándar: 2.6 mg/dL\n\nValor mínimo: 114.8 mg/dL\nValor máximo: 121.2 mg/dL\nRango: 6.4 mg/dL\n\n═══════════════════════════════════════════════════════════════\n\n📈 TIEMPO EN RANGO (Target: 70-180 mg/dL)\n\n██████████████████████████████████████████████████ 100.0% EN RANGO\n 0.0% BAJO\n 0.0% ALTO\n\nDesglose:\n  < 70 mg/dL  (Hipoglucemia):  0 mediciones (0.0%)\n  70-180 mg/dL (Objetivo):     4 mediciones (100.0%)\n  > 180 mg/dL (Hiperglucemia): 0 mediciones (0.0%)\n\n═══════════════════════════════════════════════════════════════\n\n📅 ANÁLISIS POR MOMENTO DEL DÍA\n\nAyunas (6-8 AM):\n  Promedio: 126.1 mg/dL\n  ⚠ Por encima de meta\n\nPostdesayuno (2h):\n  Promedio: 159.6 mg/dL\n  ✓ Controlado\n\nPrecomida:\n  Promedio: 121.7 mg/dL\n\nPostcomida (2h):\n  Promedio: 121.6 mg/dL\n  ✓ Dentro de meta (<180)\n\nPrecena:\n  Promedio: 116.2 mg/dL\n\nNocturno (3 AM):\n  Promedio: 104.7 mg/dL\n\n═══════════════════════════════════════════════════════════════\n\n🎯 EVALUACIÓN DE CONTROL\n\nControl glucémico: EXCELENTE\n\nVariabilidad glucémica: Baja (deseable)\n\nAdherencia al monitoreo: Regular (incrementar frecuencia)\n\n═══════════════════════════════════════════════════════════════\n\n💡 OBSERVACIONES Y RECOMENDACIONES\n\n✓ El 100% del tiempo en rango objetivo es excelente.\n\n✓ Sin episodios significativos de hipoglucemia.\n\n✓ Hiperglucemias bien controladas.\n\n📉 Tendencia a la mejoría respecto al mes anterior.\n\nACCIONES SUGERIDAS:\n1. Mantener frecuencia actual de monitoreo\n2. Continuar con plan alimenticio actual\n3. Mantener esquema actual de medicación\n4. Próxima revisión en 30 días\n\n═══════════════════════════════════════════════════════════════\n\nEste reporte fue generado automáticamente basado en las mediciones\nregistradas. Consulte con su médico para interpretación personalizada.\n\nFecha de generación: 2023-09-19 15:37\n"
+    },
+    {
+      "title": "HbA1c (Hemoglobina Glicada) - 2024-02-06",
+      "source": "lab_hba1c_8",
+      "snippet": "  Meta para diabéticos: < 7.0% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  INTERPRETACIÓN: Control glucémico: EXCELENTE  Este valor refleja el promedio de glucosa en los últimos 2-3 meses. Glucosa promedio estimada: 111.0 mg/dL  ✓ El control es adecuado, continuar con el plan actual.  TENDENCIA: ",
+      "score": 0.717,
+      "content": "HEMOGLOBINA GLICADA (HbA1c)\nFecha: 06 de February de 2024\nPaciente: Alexander (demo-alex)\nDiagnóstico: Diabetes Mellitus Tipo 2\n\nRESULTADO:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nHbA1c: 5.50%\n\nValor de referencia:\n  < 5.7%    : Sin diabetes\n  5.7-6.4%  : Prediabetes  \n  ≥ 6.5%    : Diabetes\n  \nMeta para diabéticos: < 7.0%\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\nINTERPRETACIÓN:\nControl glucémico: EXCELENTE\n\nEste valor refleja el promedio de glucosa en los últimos 2-3 meses.\nGlucosa promedio estimada: 111.0 mg/dL\n\n✓ El control es adecuado, continuar con el plan actual.\n\nTENDENCIA:\n📈 Leve incremento, revisar adherencia\n\nRECOMENDACIONES:\n1. Mantener adherencia a metformina\n2. Continuar monitoreo de glucosa capilar\n3. Mantener plan alimenticio\n4. Próximo HbA1c en 3 meses\n\nMédico: Dr. García - Endocrinología\n"
+    },
+    {
+      "title": "HbA1c (Hemoglobina Glicada) - 2024-10-31",
+      "source": "lab_hba1c_5",
+      "snippet": " Meta para diabéticos: < 7.0% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  INTERPRETACIÓN: Control glucémico: EXCELENTE  Este valor refleja el promedio de glucosa en los últimos 2-3 meses. Glucosa promedio estimada: 116.7 mg/dL  ✓ El control es adecuado, continuar con el plan actual.  TENDENCIA: 📉",
+      "score": 0.714,
+      "content": "HEMOGLOBINA GLICADA (HbA1c)\nFecha: 31 de October de 2024\nPaciente: Alexander (demo-alex)\nDiagnóstico: Diabetes Mellitus Tipo 2\n\nRESULTADO:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nHbA1c: 5.69%\n\nValor de referencia:\n  < 5.7%    : Sin diabetes\n  5.7-6.4%  : Prediabetes  \n  ≥ 6.5%    : Diabetes\n  \nMeta para diabéticos: < 7.0%\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\nINTERPRETACIÓN:\nControl glucémico: EXCELENTE\n\nEste valor refleja el promedio de glucosa en los últimos 2-3 meses.\nGlucosa promedio estimada: 116.7 mg/dL\n\n✓ El control es adecuado, continuar con el plan actual.\n\nTENDENCIA:\n📉 Mejoría respecto a valores previos\n\nRECOMENDACIONES:\n1. Mantener adherencia a metformina\n2. Continuar monitoreo de glucosa capilar\n3. Mantener plan alimenticio\n4. Próximo HbA1c en 3 meses\n\nMédico: Dr. García - Endocrinología\n"
+    }
+  ],
+  "conversation_id": "6e4c6355-d82d-4bed-879f-f15df0f8cdf6"
+}
+
+Referencias: 3
+
+
+======================================
+PROMPT 4
+======================================
+Pregunta: ¿Hay relación entre mis pasos diarios y mi peso en 2023? Resume hallazgos.
+
+Enviando request...
+✅ RESPUESTA RECIBIDA
+
+Categoría detectada: lifestyle
+
+Respuesta:
+{
+  "status": "success",
+  "category": "lifestyle",
+  "final_text": "En base a tus datos recientes, has registrado un promedio de 6,484.7 pasos diarios en los últimos 30 días, con un mínimo de 6,153 pasos y un máximo de 7,046 pasos. Esto sugiere que tu actividad física ha sido relativamente consistente, aunque podría beneficiarse de un ligero aumento para alcanzar las recomendaciones generales de actividad diaria.\n\nEn relación a tu peso, en la entrevista anual se mencionó un incremento leve de peso, lo que podría estar relacionado con varios factores, incluyendo cambios en la dieta y la adherencia parcial a la metformina, que se utiliza para el control glucémico. Tu IMC actual se sitúa en 26.0 kg/m², lo que indica que estás en la categoría de sobrepeso.\n\nAunque hay una conexión potencial entre la actividad física y el control de peso, es importante recordar que múltiples factores influyen en el peso corporal, incluyendo la dieta, el metabolismo y la adherencia a tratamientos. Por lo tanto, aunque tus pasos diarios son un buen indicador de actividad, no se puede establecer una relación directa sin considerar estos otros aspectos.",
+  "used_agents": [
+    "lifestyle"
+  ],
+  "safety_flags": [
+    "no_diagnosis"
+  ],
+  "references": [
+    {
+      "title": "Entrevista anual",
+      "source": "synthetic",
+      "snippet": "Entrevista médica anual: El paciente reporta cambios en la dieta, incremento leve de peso, y adherencia parcial a metformina desde el último año. Meta: mejorar control glucémico.",
+      "score": 0.894,
+      "content": "Entrevista médica anual: El paciente reporta cambios en la dieta, incremento leve de peso, y adherencia parcial a metformina desde el último año. Meta: mejorar control glucémico."
+    },
+    {
+      "title": "Consulta de Nutrición - 2022-02-05",
+      "source": "nutrition_10",
+      "snippet": "CONSULTA DE NUTRICIÓN CLÍNICA Fecha: 05 de February de 2022 Paciente: Alexander (demo-alex) Nutrióloga: Lic. María Fernández  ANTROPOMETRÍA: - Peso actual: 79.6 kg - Talla: 1.75 m - IMC: 26.0 kg/m² (Sobrepeso) - Circunferencia abdominal: 95 cm (✓ Adecuado)  EVALUACIÓN DIETÉTICA: Recordatorio de 24 h",
+      "score": 0.848,
+      "content": "CONSULTA DE NUTRICIÓN CLÍNICA\nFecha: 05 de February de 2022\nPaciente: Alexander (demo-alex)\nNutrióloga: Lic. María Fernández\n\nANTROPOMETRÍA:\n- Peso actual: 79.6 kg\n- Talla: 1.75 m\n- IMC: 26.0 kg/m² (Sobrepeso)\n- Circunferencia abdominal: 95 cm (✓ Adecuado)\n\nEVALUACIÓN DIETÉTICA:\nRecordatorio de 24 horas:\n- Desayuno: Adecuado en porciones\n- Comida: Baja en vegetales\n- Cena: Tardía y alta en calorías\n- Colaciones: Inconsistentes\n\nDistribución de macronutrientes actual:\n- Carbohidratos: 45-50%\n- Proteínas: 20-25%\n- Grasas: 25-30%\n\nDIAGNÓSTICO NUTRICIONAL:\n- Diabetes Mellitus Tipo 2 con buen control\n- IMC en rango de sobrepeso\n- Consumo elevado de carbohidratos simples\n\nPLAN ALIMENTICIO PERSONALIZADO:\n\n1. OBJETIVOS:\n   - Mantener glucosa en ayunas 80-130 mg/dL\n   - Glucosa postprandial <180 mg/dL\n   - Reducir 0.5-1 kg/mes\n   - Mejorar perfil lipídico\n\n2. PRESCRIPCIÓN CALÓRICA:\n   - VCT: 1698 kcal/día\n   - 45-50% carbohidratos (preferir complejos)\n   - 20-25% proteínas (magras)\n   - 25-30% grasas (preferir insaturadas)\n\n3. DISTRIBUCIÓN DE COMIDAS:\n   - 5 tiempos: 3 comidas principales + 2 colaciones\n   - Horarios regulares (importante para control glucémico)\n   - Colación nocturna si toma metformina en la cena\n\n4. RECOMENDACIONES ESPECÍFICAS:\n\nCARBOHIDRATOS (45-50% VCT):\n   ✓ Preferir: granos enteros, leguminosas, vegetales\n   ✓ Limitar: harinas refinadas, azúcares simples\n   ✓ Método del plato: 1/4 del plato\n   ✓ Conteo de carbohidratos: 45-60g por comida\n\nPROTEÍNAS (20-25% VCT):\n   ✓ Pollo, pescado, pavo sin piel\n   ✓ Leguminosas (también aportan fibra)\n   ✓ Huevo (entero, 4-7 por semana)\n   ✗ Limitar carnes rojas grasas\n\nGRASAS (25-30% VCT):\n   ✓ Aceite de oliva, aguacate, nueces\n   ✓ Pescados grasos (omega-3)\n   ✗ Evitar grasas trans y saturadas\n\nFIBRA:\n   - Meta: 25-30 g/día\n   - Ayuda a control glucémico y saciedad\n   - Vegetales en cada comida\n\nHIDRATACIÓN:\n   - 2-2.5 litros de agua al día\n   - Evitar bebidas azucaradas y jugos\n\n5. EJEMPLO DE MENÚ DIARIO:\n\nDESAYUNO (7:00 AM):\n- 2 claras de huevo + 1 huevo entero\n- 2 tortillas de maíz pequeñas\n- 1 taza de frijoles\n- 1 taza de papaya\n- Café o té sin azúcar\n\nCOLACIÓN MATUTINA (10:00 AM):\n- 1 manzana mediana\n- 10 almendras\n\nCOMIDA (14:00 PM):\n- Pechuga de pollo a la plancha (120g)\n- 1 taza de arroz integral\n- Ensalada abundante\n- 1 cucharada de aceite de oliva\n- Agua de jamaica sin azúcar\n\nCOLACIÓN VESPERTINA (17:00 PM):\n- 1 taza de yogurt griego natural\n- 1/2 taza de fresas\n\nCENA (20:00 PM):\n- Filete de pescado al horno (150g)\n- 2 tortillas de maíz\n- Verduras al vapor\n- Ensalada\n- 1 mandarina\n\n6. SEGUIMIENTO:\n   - Próxima cita en 4 semanas\n   - Llevar registro de alimentos (3 días)\n   - Monitorear glucosas pre y postprandiales\n   - Pesarse semanalmente\n\nEDUCACIÓN NUTRICIONAL PROPORCIONADA:\n✓ Método del plato\n✓ Lectura de etiquetas nutricionales\n✓ Porciones adecuadas\n✓ Opciones para comer fuera de casa\n\nLic. María Fernández\nNutrióloga Clínica - Cédula 234567\n"
+    },
+    {
+      "title": "Consulta de Nutrición - 2021-04-02",
+      "source": "nutrition_12",
+      "snippet": "CONSULTA DE NUTRICIÓN CLÍNICA Fecha: 02 de April de 2021 Paciente: Alexander (demo-alex) Nutrióloga: Lic. María Fernández  ANTROPOMETRÍA: - Peso actual: 78.1 kg - Talla: 1.75 m - IMC: 25.5 kg/m² (Sobrepeso) - Circunferencia abdominal: 97 cm (✓ Adecuado)  EVALUACIÓN DIETÉTICA: Recordatorio de 24 hora",
+      "score": 0.833,
+      "content": "CONSULTA DE NUTRICIÓN CLÍNICA\nFecha: 02 de April de 2021\nPaciente: Alexander (demo-alex)\nNutrióloga: Lic. María Fernández\n\nANTROPOMETRÍA:\n- Peso actual: 78.1 kg\n- Talla: 1.75 m\n- IMC: 25.5 kg/m² (Sobrepeso)\n- Circunferencia abdominal: 97 cm (✓ Adecuado)\n\nEVALUACIÓN DIETÉTICA:\nRecordatorio de 24 horas:\n- Desayuno: Adecuado en porciones\n- Comida: Balanceada\n- Cena: Tardía y alta en calorías\n- Colaciones: 2 al día, adecuadas\n\nDistribución de macronutrientes actual:\n- Carbohidratos: 60% (excesivo)\n- Proteínas: 20-25%\n- Grasas: 35% (elevado)\n\nDIAGNÓSTICO NUTRICIONAL:\n- Diabetes Mellitus Tipo 2 con buen control\n- IMC en rango de sobrepeso\n- Consumo elevado de carbohidratos simples\n\nPLAN ALIMENTICIO PERSONALIZADO:\n\n1. OBJETIVOS:\n   - Mantener glucosa en ayunas 80-130 mg/dL\n   - Glucosa postprandial <180 mg/dL\n   - Reducir 0.5-1 kg/mes\n   - Mejorar perfil lipídico\n\n2. PRESCRIPCIÓN CALÓRICA:\n   - VCT: 1630 kcal/día\n   - 45-50% carbohidratos (preferir complejos)\n   - 20-25% proteínas (magras)\n   - 25-30% grasas (preferir insaturadas)\n\n3. DISTRIBUCIÓN DE COMIDAS:\n   - 5 tiempos: 3 comidas principales + 2 colaciones\n   - Horarios regulares (importante para control glucémico)\n   - Colación nocturna si toma metformina en la cena\n\n4. RECOMENDACIONES ESPECÍFICAS:\n\nCARBOHIDRATOS (45-50% VCT):\n   ✓ Preferir: granos enteros, leguminosas, vegetales\n   ✓ Limitar: harinas refinadas, azúcares simples\n   ✓ Método del plato: 1/4 del plato\n   ✓ Conteo de carbohidratos: 45-60g por comida\n\nPROTEÍNAS (20-25% VCT):\n   ✓ Pollo, pescado, pavo sin piel\n   ✓ Leguminosas (también aportan fibra)\n   ✓ Huevo (entero, 4-7 por semana)\n   ✗ Limitar carnes rojas grasas\n\nGRASAS (25-30% VCT):\n   ✓ Aceite de oliva, aguacate, nueces\n   ✓ Pescados grasos (omega-3)\n   ✗ Evitar grasas trans y saturadas\n\nFIBRA:\n   - Meta: 25-30 g/día\n   - Ayuda a control glucémico y saciedad\n   - Vegetales en cada comida\n\nHIDRATACIÓN:\n   - 2-2.5 litros de agua al día\n   - Evitar bebidas azucaradas y jugos\n\n5. EJEMPLO DE MENÚ DIARIO:\n\nDESAYUNO (7:00 AM):\n- 2 claras de huevo + 1 huevo entero\n- 2 tortillas de maíz pequeñas\n- 1 taza de frijoles\n- 1 taza de papaya\n- Café o té sin azúcar\n\nCOLACIÓN MATUTINA (10:00 AM):\n- 1 manzana mediana\n- 10 almendras\n\nCOMIDA (14:00 PM):\n- Pechuga de pollo a la plancha (120g)\n- 1 taza de arroz integral\n- Ensalada abundante\n- 1 cucharada de aceite de oliva\n- Agua de jamaica sin azúcar\n\nCOLACIÓN VESPERTINA (17:00 PM):\n- 1 taza de yogurt griego natural\n- 1/2 taza de fresas\n\nCENA (20:00 PM):\n- Filete de pescado al horno (150g)\n- 2 tortillas de maíz\n- Verduras al vapor\n- Ensalada\n- 1 mandarina\n\n6. SEGUIMIENTO:\n   - Próxima cita en 4 semanas\n   - Llevar registro de alimentos (3 días)\n   - Monitorear glucosas pre y postprandiales\n   - Pesarse semanalmente\n\nEDUCACIÓN NUTRICIONAL PROPORCIONADA:\n✓ Método del plato\n✓ Lectura de etiquetas nutricionales\n✓ Porciones adecuadas\n✓ Opciones para comer fuera de casa\n\nLic. María Fernández\nNutrióloga Clínica - Cédula 234567\n"
+    }
+  ],
+  "conversation_id": "cfba2c91-96f3-4f72-b38c-bfa8605206a9"
+}
+
+Referencias: 3
+
+
+======================================
+PROMPT 5
+======================================
+Pregunta: Muéstrame los diagnósticos de Diabetes de 2010 a 2025 (top 5 con fecha).
+
+Enviando request...
+✅ RESPUESTA RECIBIDA
+
+Categoría detectada: informational
+
+Respuesta:
+{
+  "status": "success",
+  "category": "informational",
+  "final_text": "Diagnósticos (2010):\n- 2010-12-16 — Diagnóstico de Diabetes Tipo 2\n- 2010-11-14 — Diagnóstico de Diabetes Tipo 2",
+  "used_agents": [
+    "informational"
+  ],
+  "safety_flags": [
+    "no_diagnosis"
+  ],
+  "references": [],
+  "conversation_id": "33c6200f-ed45-44d0-b428-a33d02468b04"
+}
+
+Referencias: 0
+
+
+======================================
+PROMPT 6
+======================================
+Pregunta: Compara mi presión arterial: 2020 vs 2024 (promedios y variación).
+
+Enviando request...
+✅ RESPUESTA RECIBIDA
+
+Categoría detectada: comparative
+
+Respuesta:
+{
+  "status": "success",
+  "category": "comparative",
+  "final_text": "En relación a tu presión arterial, hemos analizado dos periodos: el inicial, que abarca 252 registros, y el más reciente, que también tiene 252 registros. \n\nEl promedio de tu presión arterial sistólica en el periodo inicial fue de 133.9 mmHg, mientras que en el periodo reciente ha aumentado a 146.3 mmHg. Esto representa un incremento absoluto de 12.3 mmHg y un cambio porcentual del 9.2%. Este aumento indica una tendencia hacia niveles más altos de presión arterial en el tiempo que has analizado.\n\nEs importante tener en cuenta esta variación y discutirla con un profesional de la salud para entender mejor su significado en el contexto de tu salud general.",
+  "used_agents": [
+    "comparative"
+  ],
+  "safety_flags": [
+    "no_diagnosis"
+  ],
+  "references": [],
+  "conversation_id": "6de53935-41da-4fec-87ff-418cc4ed00a9"
+}
+
+Referencias: 0
+
+
+======================================
+PROMPT 7
+======================================
+Pregunta: ¿Cómo fue mi adherencia a tratamientos para Diabetes entre 2016 y 2018?
+
+Enviando request...
+✅ RESPUESTA RECIBIDA
+
+Categoría detectada: lifestyle
+
+Respuesta:
+{
+  "status": "success",
+  "category": "lifestyle",
+  "final_text": "Lamentablemente, no tengo acceso a información específica sobre tu adherencia a tratamientos para diabetes entre 2016 y 2018. Sin embargo, puedo ayudarte a revisar tus datos más recientes de salud, como tus niveles de HbA1c, que reflejan el control de tu diabetes a largo plazo.\n\nEn tus últimos análisis, el nivel de HbA1c ha mostrado un aumento gradual: 5.03% en marzo de 2021, 5.47% en noviembre de 2022, y 5.70% en noviembre de 2023 [1][2][3]. Este incremento podría indicar cambios en tu manejo de la diabetes, pero es importante discutir estos resultados con tu médico para entender su significado y cualquier acción que debas considerar.\n\nSi deseas, podemos hablar sobre otros aspectos de tu salud, como tu actividad física, horas de sueño y estado de ánimo. Estos factores también pueden influir en tu bienestar general.",
+  "used_agents": [
+    "lifestyle"
+  ],
+  "safety_flags": [
+    "no_diagnosis"
+  ],
+  "references": [
+    {
+      "title": "HbA1c (Hemoglobina Glicada) - 2021-03-02",
+      "source": "lab_hba1c_20",
+      "snippet": "HEMOGLOBINA GLICADA (HbA1c) Fecha: 02 de March de 2021 Paciente: Alexander (demo-alex) Diagnóstico: Diabetes Mellitus Tipo 2  RESULTADO: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ HbA1c: 5.03%  Valor de referencia:   < 5.7%    : Sin diabetes   5.7-6.4%  : Prediabetes     ≥ 6.5%    : Diabetes    M",
+      "score": 0.951,
+      "content": "HEMOGLOBINA GLICADA (HbA1c)\nFecha: 02 de March de 2021\nPaciente: Alexander (demo-alex)\nDiagnóstico: Diabetes Mellitus Tipo 2\n\nRESULTADO:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nHbA1c: 5.03%\n\nValor de referencia:\n  < 5.7%    : Sin diabetes\n  5.7-6.4%  : Prediabetes  \n  ≥ 6.5%    : Diabetes\n  \nMeta para diabéticos: < 7.0%\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\nINTERPRETACIÓN:\nControl glucémico: EXCELENTE\n\nEste valor refleja el promedio de glucosa en los últimos 2-3 meses.\nGlucosa promedio estimada: 97.6 mg/dL\n\n✓ El control es adecuado, continuar con el plan actual.\n\nTENDENCIA:\n📉 Mejoría respecto a valores previos\n\nRECOMENDACIONES:\n1. Mantener adherencia a metformina\n2. Continuar monitoreo de glucosa capilar\n3. Mantener plan alimenticio\n4. Próximo HbA1c en 3 meses\n\nMédico: Dr. García - Endocrinología\n"
+    },
+    {
+      "title": "HbA1c (Hemoglobina Glicada) - 2022-11-11",
+      "source": "lab_hba1c_13",
+      "snippet": "HEMOGLOBINA GLICADA (HbA1c) Fecha: 11 de November de 2022 Paciente: Alexander (demo-alex) Diagnóstico: Diabetes Mellitus Tipo 2  RESULTADO: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ HbA1c: 5.47%  Valor de referencia:   < 5.7%    : Sin diabetes   5.7-6.4%  : Prediabetes     ≥ 6.5%    : Diabetes  ",
+      "score": 0.933,
+      "content": "HEMOGLOBINA GLICADA (HbA1c)\nFecha: 11 de November de 2022\nPaciente: Alexander (demo-alex)\nDiagnóstico: Diabetes Mellitus Tipo 2\n\nRESULTADO:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nHbA1c: 5.47%\n\nValor de referencia:\n  < 5.7%    : Sin diabetes\n  5.7-6.4%  : Prediabetes  \n  ≥ 6.5%    : Diabetes\n  \nMeta para diabéticos: < 7.0%\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\nINTERPRETACIÓN:\nControl glucémico: EXCELENTE\n\nEste valor refleja el promedio de glucosa en los últimos 2-3 meses.\nGlucosa promedio estimada: 110.4 mg/dL\n\n✓ El control es adecuado, continuar con el plan actual.\n\nTENDENCIA:\n📉 Mejoría respecto a valores previos\n\nRECOMENDACIONES:\n1. Mantener adherencia a metformina\n2. Continuar monitoreo de glucosa capilar\n3. Mantener plan alimenticio\n4. Próximo HbA1c en 3 meses\n\nMédico: Dr. García - Endocrinología\n"
+    },
+    {
+      "title": "HbA1c (Hemoglobina Glicada) - 2023-11-15",
+      "source": "lab_hba1c_9",
+      "snippet": "HEMOGLOBINA GLICADA (HbA1c) Fecha: 15 de November de 2023 Paciente: Alexander (demo-alex) Diagnóstico: Diabetes Mellitus Tipo 2  RESULTADO: ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ HbA1c: 5.70%  Valor de referencia:   < 5.7%    : Sin diabetes   5.7-6.4%  : Prediabetes     ≥ 6.5%    : Diabetes  ",
+      "score": 0.913,
+      "content": "HEMOGLOBINA GLICADA (HbA1c)\nFecha: 15 de November de 2023\nPaciente: Alexander (demo-alex)\nDiagnóstico: Diabetes Mellitus Tipo 2\n\nRESULTADO:\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nHbA1c: 5.70%\n\nValor de referencia:\n  < 5.7%    : Sin diabetes\n  5.7-6.4%  : Prediabetes  \n  ≥ 6.5%    : Diabetes\n  \nMeta para diabéticos: < 7.0%\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\nINTERPRETACIÓN:\nControl glucémico: EXCELENTE\n\nEste valor refleja el promedio de glucosa en los últimos 2-3 meses.\nGlucosa promedio estimada: 116.9 mg/dL\n\n✓ El control es adecuado, continuar con el plan actual.\n\nTENDENCIA:\n📉 Mejoría respecto a valores previos\n\nRECOMENDACIONES:\n1. Mantener adherencia a metformina\n2. Continuar monitoreo de glucosa capilar\n3. Mantener plan alimenticio\n4. Próximo HbA1c en 3 meses\n\nMédico: Dr. García - Endocrinología\n"
+    }
+  ],
+  "conversation_id": "1b4ae9b9-9b90-4b76-b25f-ab763a3f8ade"
+}
+
+Referencias: 3
+
+
+======================================
+PROMPT 8
+======================================
+Pregunta: Resumen trimestral 2024: consultas y cambios de tratamiento más relevantes.
+
+Enviando request...
+✅ RESPUESTA RECIBIDA
+
+Categoría detectada: informational
+
+Respuesta:
+{
+  "status": "success",
+  "category": "informational",
+  "final_text": "Últimas consultas (2024):\n- 2024-09-10 — Consulta de control\n  Consulta de control: El paciente refiere cansancio y dificultades para adherirse al plan. Se refuerza educación y se ajusta monitoreo.\n- 2024-03-10 — Consulta de control\n  Consulta de control: El paciente refiere cansancio y dificultades para adherirse al plan. Se refuerza educación y se ajusta monitoreo.",
+  "used_agents": [
+    "informational"
+  ],
+  "safety_flags": [
+    "no_diagnosis"
+  ],
+  "references": [],
+  "conversation_id": "b7441518-ac47-414a-8cc6-66baa9808438"
+}
+
+Referencias: 0
+
+
+======================================
+PROMPT 9
+======================================
+Pregunta: Busca documentos de 2014 a 2016 que contengan "insulina basal" (título y fecha).
+
+Enviando request...
+✅ RESPUESTA RECIBIDA
+
+Categoría detectada: informational
+
+Respuesta:
+{
+  "status": "success",
+  "category": "informational",
+  "final_text": "Falta 'user_id' para realizar el análisis.",
+  "used_agents": [
+    "informational"
+  ],
+  "safety_flags": [
+    "no_diagnosis"
+  ],
+  "references": []
+}
+
+Referencias: 0
+
+
+======================================
+PROMPT 10
+======================================
+Pregunta: En el contexto filtrado actual, dame un "Resumen del contexto" y 3 insights clave.
+
+Enviando request...
+✅ RESPUESTA RECIBIDA
+
+Categoría detectada: informational
+
+Respuesta:
+{
+  "status": "success",
+  "category": "informational",
+  "final_text": "Falta 'user_id' para realizar el análisis.",
+  "used_agents": [
+    "informational"
+  ],
+  "safety_flags": [
+    "no_diagnosis"
+  ],
+  "references": []
+}
+
+Referencias: 0
+
+
+======================================
+TEST COMPLETADO
+======================================

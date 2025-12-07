@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: platform-config
+  namespace: {{ .Values.namespace }}
+data:
+  DJANGO_DEBUG: {{ .Values.backend.env.DJANGO_DEBUG | quote }}
+  SECURE_SSL_REDIRECT: {{ .Values.backend.env.SECURE_SSL_REDIRECT | quote }}
+  FEATURE_RAG: {{ .Values.backend.env.FEATURE_RAG | quote }}
+  FEATURE_PROACTIVITY: {{ .Values.backend.env.FEATURE_PROACTIVITY | quote }}
+  DB_SSL_REQUIRE: {{ .Values.backend.env.DB_SSL_REQUIRE | default "false" | quote }}
+  NEXT_PUBLIC_PLATFORM_BACKEND_ORIGIN: {{ .Values.frontend.env.NEXT_PUBLIC_PLATFORM_BACKEND_ORIGIN | quote }}
+  NEXT_PUBLIC_PLATFORM_API_KEY: {{ .Values.frontend.env.NEXT_PUBLIC_PLATFORM_API_KEY | quote }}
+
+

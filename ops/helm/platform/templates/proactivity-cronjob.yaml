@@ -1,0 +1,27 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: platform-proactivity
+  namespace: {{ .Values.namespace }}
+spec:
+  schedule: "0 */6 * * *" # cada 6 horas
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: run-proactivity
+              image: "{{ .Values.backend.image.repository }}:{{ .Values.backend.image.tag }}"
+              imagePullPolicy: {{ .Values.backend.image.pullPolicy }}
+              envFrom:
+                - configMapRef:
+                    name: platform-config
+                - secretRef:
+                    name: platform-secrets
+              command: ["sh", "-c", "python3 manage.py run_proactivity --settings=project.settings --days=30"]
+
+
