@@ -35,45 +35,53 @@ def analyze_user_health_profile(user_id: int) -> Dict[str, Any]:
     }
     
     all_prompts = []
-
+    
     # 1. PROMPTS DE RESUMEN TEMPORAL (1, 3, 5 Años)
     # Verificar antigüedad de datos
-    oldest_event = TimelineEvent.objects.filter(user_id=user_id).order_by('occurred_at').first()
-    if oldest_event:
-        years_history = (timezone.now() - oldest_event.occurred_at).days / 365
-        
-        if years_history >= 1:
-            all_prompts.append({
-                'prompt': 'Resumen de mi salud: últimos 12 meses',
-                'category': 'summary',
-                'type': 'temporal',
-                'priority': 'high',
-                'emoji': '📅',
-                'insight': 'Visión general del último año',
-                'score': 1.0
-            })
-        
-        if years_history >= 3:
-            all_prompts.append({
-                'prompt': 'Resumen de historial: últimos 3 años',
-                'category': 'summary',
-                'type': 'temporal',
-                'priority': 'medium',
-                'emoji': '📅',
-                'insight': 'Evolución a mediano plazo',
-                'score': 0.9
-            })
+    try:
+        oldest_event = TimelineEvent.objects.filter(user_id=user_id).order_by('occurred_at').first()
+        if oldest_event and oldest_event.occurred_at:
+            occurred = oldest_event.occurred_at
+            if timezone.is_naive(occurred):
+                occurred = timezone.make_aware(occurred)
             
-        if years_history >= 5:
-            all_prompts.append({
-                'prompt': 'Resumen de historial: últimos 5 años',
-                'category': 'summary',
-                'type': 'temporal',
-                'priority': 'medium',
-                'emoji': '📅',
-                'insight': 'Tendencias de largo plazo',
-                'score': 0.85
-            })
+            now = timezone.now()
+            years_history = (now - occurred).days / 365.0
+            
+            if years_history >= 1:
+                all_prompts.append({
+                    'prompt': 'Resumen de mi salud: últimos 12 meses',
+                    'category': 'summary',
+            'type': 'temporal',
+            'priority': 'high',
+                    'emoji': '📅',
+                    'insight': 'Visión general del último año',
+                    'score': 1.0
+                })
+            
+            if years_history >= 3:
+                all_prompts.append({
+                    'prompt': 'Resumen de historial: últimos 3 años',
+                    'category': 'summary',
+        'type': 'temporal',
+        'priority': 'medium',
+                    'emoji': '📅',
+                    'insight': 'Evolución a mediano plazo',
+                    'score': 0.9
+                })
+                
+            if years_history >= 5:
+                all_prompts.append({
+                    'prompt': 'Resumen de historial: últimos 5 años',
+                    'category': 'summary',
+        'type': 'temporal',
+        'priority': 'medium',
+                    'emoji': '📅',
+                    'insight': 'Tendencias de largo plazo',
+                    'score': 0.85
+                })
+    except Exception as e:
+        print(f"Error calculating history prompts: {e}")
 
     # 2. PROMPTS POR DOLENCIA (CONDICIÓN)
     # Finding conditions linked to user's events
@@ -82,7 +90,7 @@ def analyze_user_health_profile(user_id: int) -> Dict[str, Any]:
         all_prompts.append({
             'prompt': f'Resumen de mi historial de {cond.name}',
             'category': 'condition',
-            'type': 'analysis',
+        'type': 'analysis',
             'priority': 'high',
             'emoji': '🏥',
             'insight': f'Evolución específica de {cond.name}',
@@ -161,9 +169,11 @@ def prioritize_prompts(prompts: List[Dict[str, Any]], max_prompts: int = 10) -> 
     """
     Prioriza prompts basándose en el score asignado.
     """
+    # Filtrar elementos inválidos
+    valid_prompts = [p for p in prompts if isinstance(p, dict)]
     # Ordenar por score descendente
-    prompts.sort(key=lambda x: x.get('score', 0), reverse=True)
-    return prompts[:max_prompts]
+    valid_prompts.sort(key=lambda x: x.get('score', 0), reverse=True)
+    return valid_prompts[:max_prompts]
 
 
 if __name__ == '__main__':

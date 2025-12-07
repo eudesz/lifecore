@@ -1007,7 +1007,19 @@ def prompts_intelligent(request):
         user_id_int = int(user_id)
         
         # Generar perfil con prompts inteligentes
-        profile = analyze_user_health_profile(user_id_int)
+        try:
+            profile = analyze_user_health_profile(user_id_int)
+        except Exception as inner_e:
+            print(f"Error generating prompts: {inner_e}")
+            # Fallback profile
+            user = User.objects.get(id=user_id_int)
+            profile = {
+                'user_id': user_id_int,
+                'username': user.username,
+                'categories': [],
+                'intelligent_prompts': [],
+                'summary': {'total_categories': 0, 'total_observations': 0, 'total_documents': 0}
+            }
         
         return JsonResponse({
             'user_id': profile['user_id'],

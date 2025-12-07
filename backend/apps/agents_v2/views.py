@@ -79,6 +79,9 @@ def analyze(payload: Dict[str, Any], request=None) -> Dict[str, Any]:
         6. Analizar correlaciones (ej. peso vs pasos) -> 'analyze_correlation'
         7. Analizar impacto de tratamientos (antes/después) -> 'analyze_treatment_impact'
         8. Calcular scores de salud (IMC) -> 'calculate_health_score'
+        9. Analizar paneles de laboratorio (detectar anomalías) -> 'analyze_lab_panels'
+        10. Calcular riesgo cardiovascular/diabetes -> 'calculate_risk_scores'
+        11. Verificar seguridad de medicamentos -> 'check_drug_interactions'
 
         Reglas:
         - Si preguntan por ANTECEDENTES (familiares o personales):
@@ -87,10 +90,10 @@ def analyze(payload: Dict[str, Any], request=None) -> Dict[str, Any]:
         - Si preguntan por EVOLUCIÓN de síntomas o condiciones:
            a) Usa 'get_medical_summary_data' con 'condition=X' para ver la historia estructurada.
            b) Usa 'search_medical_documents' buscando el nombre de la condición para ver notas cualitativas de progreso (ej. "evolución", "mejoría", "recaída").
+        - Si preguntan por interpretación de análisis de sangre o "labs", USA 'analyze_lab_panels'.
+        - Si preguntan "¿Qué riesgo tengo?" o probabilidades futuras, USA 'calculate_risk_scores'.
+        - Si preguntan "¿Puedo tomar X con Y?" o interacciones, USA 'check_drug_interactions'.
         - Si preguntan fechas o eventos, USA 'get_clinical_events'.
-        - Para comparaciones entre años, USA 'compare_health_periods'.
-        - Si preguntan si X afecta a Y, USA 'analyze_correlation'.
-        - Si preguntan si un medicamento funcionó, USA 'analyze_treatment_impact'.
         - NO inventes datos. Si no hay datos, dilo.
         - Responde en español, profesional y empático.
         """
@@ -125,10 +128,6 @@ def analyze(payload: Dict[str, Any], request=None) -> Dict[str, Any]:
                 # Execute tool
                 tool_result = "Error: Tool not found"
                 if fn_name in AVAILABLE_TOOLS:
-                    # Inject user_id into the function call safely
-                    # All our tools take user_id as first arg, but LLM doesn't know/provide it in args usually
-                    # We defined tools in tools.py to take user_id. 
-                    # Let's adjust how we call them.
                     try:
                         tool_result = AVAILABLE_TOOLS[fn_name](user_id=resolved_user_id, **fn_args)
                     except Exception as e:
@@ -204,3 +203,4 @@ def status() -> Dict[str, Any]:
         'mode': 'agent_v2_tools',
         'tools_loaded': list(AVAILABLE_TOOLS.keys())
     }
+

@@ -163,7 +163,202 @@ def get_medical_summary_data(user_id: int, time_range: str = '1y', category: Opt
     except Exception as e:
         return f"Error generating summary: {str(e)}"
 
-# --- NEW ADVANCED TOOLS ---
+# --- PHASE 1 ADVANCED TOOLS ---
+
+def analyze_lab_panels(user_id: int, panel_type: str = 'general') -> str:
+    """
+    Analyzes latest lab results against standard reference ranges.
+    Detects anomalies (High/Low).
+    """
+    try:
+        # Standard ranges (simplified for demo)
+        RANGES = {
+            'glucose': {'min': 70, 'max': 100, 'unit': 'mg/dL'},
+            'hba1c': {'min': 4.0, 'max': 5.7, 'unit': '%'},
+            'cholesterol_total': {'min': 0, 'max': 200, 'unit': 'mg/dL'},
+            'cholesterol_ldl': {'min': 0, 'max': 100, 'unit': 'mg/dL'},
+            'cholesterol_hdl': {'min': 40, 'max': 100, 'unit': 'mg/dL'},
+            'triglycerides': {'min': 0, 'max': 150, 'unit': 'mg/dL'},
+            'hemoglobin': {'min': 13.5, 'max': 17.5, 'unit': 'g/dL'},
+            'systolic_bp': {'min': 90, 'max': 120, 'unit': 'mmHg'},
+            'diastolic_bp': {'min': 60, 'max': 80, 'unit': 'mmHg'},
+        }
+        
+        # Fetch latest value for each known code
+        report = {'panel': panel_type, 'results': []}
+        
+        # Codes to check based on panel
+        target_codes = list(RANGES.keys())
+        if panel_type == 'lipid':
+            target_codes = [k for k in target_codes if 'cholesterol' in k or 'triglycerides' in k]
+        elif panel_type == 'metabolic':
+            target_codes = ['glucose', 'hba1c', 'cholesterol_total']
+            
+        for code in target_codes:
+            obs = Observation.objects.filter(user_id=user_id, code=code).order_by('-taken_at').first()
+            if obs:
+                ref = RANGES.get(code)
+                val = float(obs.value)
+                status = 'Normal'
+                if val < ref['min']: status = 'Low'
+                if val > ref['max']: status = 'High'
+                
+                report['results'].append({
+                    'test': code,
+                    'value': val,
+                    'unit': obs.unit,
+                    'date': obs.taken_at.date().isoformat(),
+                    'status': status,
+                    'reference_range': f"{ref['min']}-{ref['max']}"
+                })
+        
+        if not report['results']:
+            return "No recent lab results found for this panel."
+            
+        return json.dumps(report, default=str)
+    except Exception as e:
+        return f"Error analyzing labs: {str(e)}"
+
+def calculate_risk_scores(user_id: int, risk_model: str) -> str:
+    """
+    Calculates simplified clinical risk scores (Framingham, FINDRISC).
+    """
+    try:
+        risk_model = risk_model.lower()
+        
+        # Common data needed
+        age = 45 # Default/Placeholder if DOB missing. In real app, fetch from User profile.
+        # Attempt to find DOB from events? (Assuming ~1975 birth from previous context)
+        birth_event = TimelineEvent.objects.filter(user_id=user_id, kind='medical_history', payload__description__icontains='Nacimiento').first()
+        if birth_event:
+            age = (datetime.now().date() - birth_event.occurred_at.date()).days // 365
+            
+        bmi_data = json.loads(calculate_health_score(user_id, 'bmi'))
+        bmi = bmi_data.get('value', 25) if isinstance(bmi_data, dict) else 25
+        
+        if 'cardio' in risk_model or 'framingham' in risk_model:
+            # Simplified 10-year Risk Logic (Non-clinical valid, just for demo structure)
+            # Factors: Age, Gender (Male), Smoker (No), Diabetic (Yes/No), BP, Chol
+            
+            # Fetch BP & Chol
+            sbp_obs = Observation.objects.filter(user_id=user_id, code='systolic_bp').order_by('-taken_at').first()
+            sbp = float(sbp_obs.value) if sbp_obs else 120
+            
+            chol_obs = Observation.objects.filter(user_id=user_id, code='cholesterol_total').order_by('-taken_at').first()
+            chol = float(chol_obs.value) if chol_obs else 180
+            
+            # Base points
+            points = 0
+            if age > 40: points += 2
+            if chol > 200: points += 2
+            if sbp > 130: points += 2
+            if bmi > 30: points += 1
+            
+            # Check diabetes history
+            is_diabetic = TimelineEvent.objects.filter(user_id=user_id, related_conditions__contains='diabetes').exists()
+            if is_diabetic: points += 4
+            
+            risk_pct = min(30, points * 2) # Dummy calc
+            level = "Low"
+            if risk_pct >= 10: level = "Moderate"
+            if risk_pct >= 20: level = "High"
+            
+            return json.dumps({
+                "model": "Framingham (Simplified)",
+                "risk_score_10y": f"{risk_pct}%",
+                "risk_level": level,
+                "factors": {
+                    "age": age,
+                    "systolic_bp": sbp,
+                    "cholesterol": chol,
+                    "diabetes": is_diabetic
+                }
+            })
+            
+        elif 'diabetes' in risk_model or 'findrisc' in risk_model:
+            # FINDRISC simplified
+            score = 0
+            if age > 45: score += 2
+            if bmi > 25: score += 1
+            if bmi > 30: score += 3
+            
+            # History of high glucose?
+            high_gluc = Observation.objects.filter(user_id=user_id, code='glucose', value__gt=100).exists()
+            if high_gluc: score += 5
+            
+            risk_txt = "Low risk"
+            if score > 7: risk_txt = "Slightly elevated"
+            if score > 12: risk_txt = "Moderate to High"
+            if score > 15: risk_txt = "High risk (1 in 3)"
+            
+            return json.dumps({
+                "model": "FINDRISC (Simplified)",
+                "score": score,
+                "risk_description": risk_txt
+            })
+            
+        return "Risk model not supported."
+    except Exception as e:
+        return f"Error calculating risk: {str(e)}"
+
+def check_drug_interactions(user_id: int, new_drug: str) -> str:
+    """
+    Checks potential interactions between current active treatments and a new drug.
+    Uses a local knowledge base of common interactions.
+    """
+    try:
+        # 1. Get active treatments
+        active_treatments = Treatment.objects.filter(user_id=user_id, status='active').values_list('name', flat=True)
+        active_list = list(active_treatments)
+        
+        if not active_list:
+            return f"No active treatments found. '{new_drug}' has no known context interactions."
+            
+        # 2. Local KB (Simplified)
+        # Format: "drug_a": ["incompatible_1", "incompatible_2"]
+        INTERACTIONS = {
+            "warfarina": ["aspirina", "ibuprofeno", "naproxeno", "ajo"],
+            "metformina": ["alcohol", "contrastes yodados"],
+            "sildenafil": ["nitratos", "nitroglicerina"],
+            "atorvastatina": ["gemfibrozilo", "ciclosporina"],
+            "ibuprofeno": ["warfarina", "litio", "metotrexato"],
+            "aspirina": ["warfarina", "ibuprofeno"]
+        }
+        
+        alerts = []
+        new_drug_clean = new_drug.lower()
+        
+        for current in active_list:
+            current_clean = current.lower()
+            
+            # Check new vs current
+            if current_clean in INTERACTIONS:
+                bad_mixes = INTERACTIONS[current_clean]
+                for bad in bad_mixes:
+                    if bad in new_drug_clean:
+                        alerts.append(f"⚠️ MAJOR: {current} + {new_drug} (Risk of bleeding/toxicity)")
+            
+            # Check current vs new (reverse)
+            if new_drug_clean in INTERACTIONS:
+                bad_mixes = INTERACTIONS[new_drug_clean]
+                for bad in bad_mixes:
+                    if bad in current_clean:
+                        alerts.append(f"⚠️ MAJOR: {new_drug} + {current}")
+
+        if not alerts:
+            return json.dumps({
+                "status": "Safe", 
+                "message": f"No critical interactions found for {new_drug} with current meds ({', '.join(active_list)})."
+            })
+            
+        return json.dumps({
+            "status": "Warning",
+            "alerts": list(set(alerts)),
+            "current_meds": active_list
+        })
+
+    except Exception as e:
+        return f"Error checking interactions: {str(e)}"
 
 def compare_health_periods(user_id: int, metric: str, year1: int, year2: int) -> str:
     """
@@ -337,6 +532,9 @@ AVAILABLE_TOOLS = {
     "analyze_correlation": analyze_correlation,
     "analyze_treatment_impact": analyze_treatment_impact,
     "calculate_health_score": calculate_health_score,
+    "analyze_lab_panels": analyze_lab_panels,
+    "calculate_risk_scores": calculate_risk_scores,
+    "check_drug_interactions": check_drug_interactions,
 }
 
 TOOL_DEFINITIONS = [
@@ -456,6 +654,48 @@ TOOL_DEFINITIONS = [
                     "score_type": {"type": "string", "description": "Type of score: 'bmi'."}
                 },
                 "required": ["score_type"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "analyze_lab_panels",
+            "description": "Analyzes latest lab results (Lipid, Metabolic) against standard ranges and detects anomalies.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "panel_type": {"type": "string", "description": "'lipid', 'metabolic', 'general'."}
+                },
+                "required": ["panel_type"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "calculate_risk_scores",
+            "description": "Calculates clinical risk scores like Framingham (Cardio) or FINDRISC (Diabetes).",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "risk_model": {"type": "string", "description": "'cardio' (Framingham) or 'diabetes' (FINDRISC)."}
+                },
+                "required": ["risk_model"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "check_drug_interactions",
+            "description": "Checks for potential interactions between current meds and a new drug.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "new_drug": {"type": "string", "description": "Name of the new drug to check."}
+                },
+                "required": ["new_drug"]
             }
         }
     }
