@@ -1,0 +1,24 @@
+FECHA: 2022-06-03
+URGENCIA
+PACIENTE: Alexander Doe
+MOTIVO: Dolor lumbar agudo
+
+SUBJETIVO:
+Paciente refiere inicio de síntomas hace 48hs. Dolor intensidad 7/10.
+
+OBJETIVO:
+TA: 139/83 mmHg
+Temp: 37.5 C
+SatO2: 98%
+
+ANÁLISIS:
+Cuadro compatible con infección viral estacional. Se descartan complicaciones mayores.
+
+PLAN:
+1. Reposo 48hs.
+2. Paracetamol 500mg c/8hs si dolor/fiebre.
+3. Hidratación abundante.
+
+Firma:
+Dr. Eliseo Bolaños Agustí
+Matrícula: 90092

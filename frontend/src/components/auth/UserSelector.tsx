@@ -4,8 +4,8 @@ import { useAuth } from '@/context/AuthContext'
 
 const DEMO_USERS = [
   { id: 8, name: 'Alexander Synthetic', role: 'Full History (50y)', color: 'var(--primary)' },
+  { id: 9, name: 'Laura (SLE Case)', role: 'Complex Lupus & Pancreatitis', color: '#f43f5e' },
   { id: 5, name: 'Demo User 5', role: 'Diabetes & Cardio', color: '#9333ea' },
-  { id: 6, name: 'Demo User 6', role: 'Recent Surgery', color: '#10b981' },
 ]
 
 interface Props {
@@ -72,7 +72,7 @@ export default function UserSelector({ isOpen, onClose }: Props) {
             fontSize: '24px', 
             fontWeight: 700, 
             marginBottom: '8px',
-            fontFamily: 'Playfair Display, serif',
+            fontFamily: 'Roboto, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif',
             color: 'var(--text-main)'
           }}>
             Identity Verification

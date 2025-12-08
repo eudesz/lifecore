@@ -196,7 +196,16 @@ export default function DoctorPublicView() {
               <div style={{ fontSize: '18px', fontWeight: 600, fontFamily: 'monospace', color: 'var(--primary)' }}>#{data.user.toString().padStart(4, '0')}</div>
             </div>
           )}
-        </header>
+      </header>
+
+        {/* Clinical safety disclaimer for doctors */}
+        <section style={{ marginBottom: '24px' }}>
+          <p style={{ margin: 0, fontSize: '12px', color: 'var(--text-muted)', lineHeight: 1.5 }}>
+            QuantIA Professional es una herramienta de apoyo a la decisión clínica basada en los datos disponibles de este
+            paciente. No sustituye guías clínicas oficiales ni el juicio del médico tratante y puede estar limitada por
+            la calidad e integridad de los registros. Verifique siempre la información crítica en la historia clínica original.
+          </p>
+        </section>
 
         {loading && (
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '400px', flexDirection: 'column', gap: 16 }}>
@@ -205,15 +214,15 @@ export default function DoctorPublicView() {
           </div>
         )}
 
-        {error && (
+      {error && (
           <div className="card card-pad" style={{ borderColor: 'var(--lifecore-error)', background: 'rgba(239, 68, 68, 0.1)' }}>
             <h3 style={{ color: 'var(--lifecore-error)', marginTop: 0 }}>Access Denied</h3>
             <p>{error}</p>
             <p className="muted">The access token may have expired or been revoked.</p>
-          </div>
-        )}
+        </div>
+      )}
 
-        {!!data && (
+      {!!data && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
             
             {/* Navigation Tabs */}
@@ -356,64 +365,64 @@ export default function DoctorPublicView() {
                     <p className="muted" style={{ margin: '4px 0 0 0', fontSize: '13px' }}>
                       Authorized to analyze patient records and answer clinical queries.
                     </p>
-                  </div>
-                  
+          </div>
+
                   <div style={{ flex: 1, overflowY: 'auto', padding: '20px', background: 'rgba(0,0,0,0.2)' }}>
-                    {messages.length === 0 ? (
+                {messages.length === 0 ? (
                       <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)' }}>
                         Initializing secure conversation...
                       </div>
-                    ) : (
+                ) : (
                       messages.map((m, i) => (
                         <ChatMessage key={i} role={m.role} content={m.content} references={m.references} />
                       ))
-                    )}
-                  </div>
+                )}
+              </div>
 
                   <div style={{ padding: '20px', borderTop: '1px solid var(--border-light)', background: 'rgba(255,255,255,0.02)' }}>
-                    <ChatInputBar
-                      value={prompt}
-                      onChange={setPrompt}
-                      onSend={async () => {
-                        if (!token || !prompt.trim()) return
-                        const message = prompt.trim()
-                        setPrompt('')
-                        setSending(true)
-                        try {
-                          setConversation(prev => [...prev, { occurred_at: new Date().toISOString(), role: 'user', text: message }])
-                          let id = convId
-                          if (!id) {
+                <ChatInputBar
+                  value={prompt}
+                  onChange={setPrompt}
+                  onSend={async () => {
+                    if (!token || !prompt.trim()) return
+                    const message = prompt.trim()
+                    setPrompt('')
+                    setSending(true)
+                    try {
+                      setConversation(prev => [...prev, { occurred_at: new Date().toISOString(), role: 'user', text: message }])
+                      let id = convId
+                      if (!id) {
                             const newId = `${Date.now()}-${Math.random().toString(36).slice(2)}`
                             setConvId(newId)
                             id = newId
-                          }
-                          const res = await fetch(`/d/ask/${token}`, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ query: message, conversation_id: id })
-                          })
-                          if (!res.ok) throw new Error(`HTTP ${res.status}`)
-                          const json = await res.json()
-                          const finalText = json.final_text || 'Sin respuesta'
-                          setConversation(prev => [...prev, { occurred_at: new Date().toISOString(), role: 'assistant', text: finalText }])
-                        } catch (e: any) {
-                          setConversation(prev => [...prev, { occurred_at: new Date().toISOString(), role: 'assistant', text: `Error: ${e.message}` }])
-                        } finally {
-                          setSending(false)
-                        }
-                      }}
-                      disabled={sending}
-                      canSend={!!prompt.trim()}
-                      loading={sending}
-                    />
-                  </div>
-                </div>
+                      }
+                      const res = await fetch(`/d/ask/${token}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ query: message, conversation_id: id })
+                      })
+                      if (!res.ok) throw new Error(`HTTP ${res.status}`)
+                      const json = await res.json()
+                      const finalText = json.final_text || 'Sin respuesta'
+                      setConversation(prev => [...prev, { occurred_at: new Date().toISOString(), role: 'assistant', text: finalText }])
+                    } catch (e: any) {
+                      setConversation(prev => [...prev, { occurred_at: new Date().toISOString(), role: 'assistant', text: `Error: ${e.message}` }])
+                    } finally {
+                      setSending(false)
+                    }
+                  }}
+                  disabled={sending}
+                  canSend={!!prompt.trim()}
+                  loading={sending}
+                />
               </div>
+            </div>
+          </div>
             )}
 
           </div>
-        )}
-      </main>
+      )}
+    </main>
     </div>
   )
 }

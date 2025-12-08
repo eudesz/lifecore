@@ -7,6 +7,7 @@ from apps.lifecore.models import Observation, TimelineEvent, Document
 from apps.lifecore.treatment_models import Treatment
 from apps.lifecore.vectorstore_faiss import FaissVectorStore
 import math
+from apps.lifecore.graph_db import GraphDB
 
 # --- EXISTING TOOLS ---
 
@@ -171,7 +172,7 @@ def analyze_lab_panels(user_id: int, panel_type: str = 'general') -> str:
     Detects anomalies (High/Low).
     """
     try:
-        # Standard ranges (simplified for demo)
+        # Standard ranges (simplified for demo) + extended markers for complex SLE cases
         RANGES = {
             'glucose': {'min': 70, 'max': 100, 'unit': 'mg/dL'},
             'hba1c': {'min': 4.0, 'max': 5.7, 'unit': '%'},
@@ -182,9 +183,12 @@ def analyze_lab_panels(user_id: int, panel_type: str = 'general') -> str:
             'hemoglobin': {'min': 13.5, 'max': 17.5, 'unit': 'g/dL'},
             'systolic_bp': {'min': 90, 'max': 120, 'unit': 'mmHg'},
             'diastolic_bp': {'min': 60, 'max': 80, 'unit': 'mmHg'},
+            # Extended: key labs for Laura SLE case
+            'lipase': {'min': 0, 'max': 160, 'unit': 'U/L'},
+            'amylase': {'min': 0, 'max': 110, 'unit': 'U/L'},
+            'proteinuria_24h': {'min': 0, 'max': 0.3, 'unit': 'g/24h'},
         }
         
-        # Fetch latest value for each known code
         report = {'panel': panel_type, 'results': []}
         
         # Codes to check based on panel
@@ -193,6 +197,9 @@ def analyze_lab_panels(user_id: int, panel_type: str = 'general') -> str:
             target_codes = [k for k in target_codes if 'cholesterol' in k or 'triglycerides' in k]
         elif panel_type == 'metabolic':
             target_codes = ['glucose', 'hba1c', 'cholesterol_total']
+        elif panel_type == 'sle_flare':
+            # Custom panel to highlight lupus flare with pancreatitis + nephritis markers
+            target_codes = ['lipase', 'amylase', 'proteinuria_24h']
             
         for code in target_codes:
             obs = Observation.objects.filter(user_id=user_id, code=code).order_by('-taken_at').first()
@@ -233,8 +240,17 @@ def calculate_risk_scores(user_id: int, risk_model: str) -> str:
         if birth_event:
             age = (datetime.now().date() - birth_event.occurred_at.date()).days // 365
             
-        bmi_data = json.loads(calculate_health_score(user_id, 'bmi'))
-        bmi = bmi_data.get('value', 25) if isinstance(bmi_data, dict) else 25
+        bmi_raw = calculate_health_score(user_id, 'bmi')
+        bmi = 25  # default
+        try:
+            # calculate_health_score returns JSON string on success or plain text on error
+            if isinstance(bmi_raw, str) and bmi_raw.strip().startswith('{'):
+                bmi_data = json.loads(bmi_raw)
+                if isinstance(bmi_data, dict):
+                    bmi = bmi_data.get('value', 25)
+        except Exception:
+            # Fallback to default BMI if parsing fails
+            bmi = 25
         
         if 'cardio' in risk_model or 'framingham' in risk_model:
             # Simplified 10-year Risk Logic (Non-clinical valid, just for demo structure)
@@ -607,6 +623,90 @@ def analyze_nutritional_logs(user_id: int, days: int = 7) -> str:
         return f"Error analyzing nutrition: {str(e)}"
 
 
+def graph_explain_relationship(user_id: int, entities: List[str]) -> str:
+    """
+    Uses Neo4j to explore how a set of clinical concepts (entities) are connected
+    around the current patient. Returns a textual explanation of key paths.
+    """
+    try:
+        driver = GraphDB.get_driver()
+        if not driver:
+            return "Graph engine (Neo4j) is not available."
+
+        # Normalize entities (lowercase, strip)
+        clean_entities = [e.strip().lower() for e in entities if e and e.strip()]
+        if not clean_entities:
+            return "No valid entities provided to explore in the knowledge graph."
+
+        with driver.session() as session:
+            # 1. Find candidate nodes matching each entity near the patient
+            match_query = """
+            MATCH (p:Patient {id: $uid})-[*1..2]-(n)
+            WHERE ANY(term IN $terms WHERE
+                toLower(coalesce(n.name, '')) CONTAINS term OR
+                toLower(coalesce(n.title, '')) CONTAINS term
+            )
+            RETURN DISTINCT labels(n) AS labels, id(n) AS nid, properties(n) AS props
+            LIMIT 50
+            """
+            candidates = session.run(match_query, uid=user_id, terms=clean_entities)
+            nodes = []
+            for rec in candidates:
+                labels = rec["labels"]
+                props = rec["props"]
+                label_txt = props.get("name") or props.get("title") or "/".join(labels)
+                nodes.append({"labels": labels, "name": label_txt})
+
+            if not nodes:
+                return "No graph nodes were found near the patient for the specified entities."
+
+            # 2. Describe high-level connections between all matched nodes
+            # (Patient-centric: how many conditions, meds, documents are involved)
+            summary = {
+                "Condition": 0,
+                "Medication": 0,
+                "Document": 0,
+                "Event": 0,
+            }
+            for n in nodes:
+                lbls = n["labels"]
+                if "Condition" in lbls:
+                    summary["Condition"] += 1
+                if "Medication" in lbls:
+                    summary["Medication"] += 1
+                if "Document" in lbls:
+                    summary["Document"] += 1
+                if "Event" in lbls:
+                    summary["Event"] += 1
+
+            # 3. Basic textual explanation
+            parts = []
+            parts.append(
+                f"Encontré {len(nodes)} nodos en el grafo relacionados con los términos: "
+                + ", ".join(entities)
+                + "."
+            )
+            if summary["Condition"]:
+                parts.append(f"- Condiciones implicadas: {summary['Condition']}.")
+            if summary["Medication"]:
+                parts.append(f"- Medicamentos implicados: {summary['Medication']}.")
+            if summary["Document"]:
+                parts.append(f"- Documentos clínicos relacionados: {summary['Document']}.")
+            if summary["Event"]:
+                parts.append(f"- Eventos de la línea de tiempo asociados: {summary['Event']}.")
+
+            # 4. Provide a small sample of node names for context
+            sample_names = [n["name"] for n in nodes[:6]]
+            if sample_names:
+                parts.append("Ejemplos de nodos relevantes en tu grafo:")
+                for name in sample_names:
+                    parts.append(f"  • {name}")
+
+            return "\n".join(parts)
+    except Exception as e:
+        return f"Error exploring knowledge graph: {str(e)}"
+
+
 # Registry of tools for OpenAI
 AVAILABLE_TOOLS = {
     "get_biometric_data": get_biometric_data,
@@ -624,6 +724,7 @@ AVAILABLE_TOOLS = {
     "analyze_sleep_quality": analyze_sleep_quality,
     "analyze_wearable_metrics": analyze_wearable_metrics,
     "analyze_nutritional_logs": analyze_nutritional_logs,
+    "graph_explain_relationship": graph_explain_relationship,
 }
 
 TOOL_DEFINITIONS = [
@@ -826,6 +927,24 @@ TOOL_DEFINITIONS = [
                     "days": {"type": "integer", "description": "Number of days to analyze."}
                 },
                 "required": []
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "graph_explain_relationship",
+            "description": "Explains how a set of entities (diagnoses, symptoms, labs, meds) are connected in the patient-specific knowledge graph (Neo4j).",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "entities": {
+                        "type": "array",
+                        "items": {"type": "string"},
+                        "description": "List of key concepts to relate, e.g. ['lupus', 'pancreatitis', 'proteinuria', 'trombosis']."
+                    }
+                },
+                "required": ["entities"]
             }
         }
     }

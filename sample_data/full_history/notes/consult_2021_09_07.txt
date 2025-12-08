@@ -1,0 +1,29 @@
+FECHA: 2021-09-07
+PACIENTE: Alexander Doe
+MOTIVO DE CONSULTA: Control rutinario Obesidad Grado 1
+
+SUBJETIVO:
+Paciente de 46 años acude a control. Refiere sentirse bien.
+Nivel de estrés: 7/10. 
+Adherencia a medicación: Mala.
+Cambios en dieta: Comiendo fuera seguido.
+
+OBJETIVO:
+Peso: 92 kg
+TA: 139/86 mmHg
+FC: 85 lpm
+Examen físico: Abdomen blando, depresible, no doloroso. Ruidos cardiacos normales.
+
+ANÁLISIS:
+Obesidad Grado 1 estable.
+Riesgo cardiovascular: Moderado.
+
+PLAN:
+1. Continuar con medicación actual.
+2. Ajustar dieta: reducir carbohidratos y sal.
+3. Actividad física: caminar 30 min diarios.
+4. Control en 6 meses con laboratorios nuevos.
+
+Firma:
+Dr. Fanny Maura Escolano Heras
+Matrícula: 96019

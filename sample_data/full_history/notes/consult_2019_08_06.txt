@@ -1,0 +1,29 @@
+FECHA: 2019-08-06
+PACIENTE: Alexander Doe
+MOTIVO DE CONSULTA: Control rutinario Diabetes Tipo 2
+
+SUBJETIVO:
+Paciente de 44 años acude a control. Refiere sentirse bien.
+Nivel de estrés: 8/10. 
+Adherencia a medicación: Mala.
+Cambios en dieta: Intentando reducir harinas.
+
+OBJETIVO:
+Peso: 92 kg
+TA: 133/94 mmHg
+FC: 65 lpm
+Examen físico: Abdomen blando, depresible, no doloroso. Ruidos cardiacos normales.
+
+ANÁLISIS:
+Diabetes Tipo 2 mal controlado.
+Riesgo cardiovascular: Bajo.
+
+PLAN:
+1. Continuar con medicación actual.
+2. Ajustar dieta: reducir carbohidratos y sal.
+3. Actividad física: caminar 30 min diarios.
+4. Control en 6 meses con laboratorios nuevos.
+
+Firma:
+Dr. Rosalina Catalina Hervia Perea
+Matrícula: 60895

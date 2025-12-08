@@ -1,0 +1,29 @@
+FECHA: 2019-02-09
+PACIENTE: Alexander Doe
+MOTIVO DE CONSULTA: Control rutinario Diabetes Tipo 2
+
+SUBJETIVO:
+Paciente de 44 años acude a control. Refiere sed aumentada.
+Nivel de estrés: 3/10. 
+Adherencia a medicación: Buena.
+Cambios en dieta: Comiendo fuera seguido.
+
+OBJETIVO:
+Peso: 92 kg
+TA: 123/86 mmHg
+FC: 76 lpm
+Examen físico: Abdomen blando, depresible, no doloroso. Ruidos cardiacos normales.
+
+ANÁLISIS:
+Diabetes Tipo 2 estable.
+Riesgo cardiovascular: Bajo.
+
+PLAN:
+1. Continuar con medicación actual.
+2. Ajustar dieta: reducir carbohidratos y sal.
+3. Actividad física: caminar 30 min diarios.
+4. Control en 6 meses con laboratorios nuevos.
+
+Firma:
+Dr. Angelina Collado Seguí
+Matrícula: 37802

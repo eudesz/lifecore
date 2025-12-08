@@ -1,0 +1,29 @@
+FECHA: 2012-11-26
+PACIENTE: Alexander Doe
+MOTIVO DE CONSULTA: Control rutinario Control General
+
+SUBJETIVO:
+Paciente de 37 años acude a control. Refiere sed aumentada.
+Nivel de estrés: 3/10. 
+Adherencia a medicación: Regular.
+Cambios en dieta: No.
+
+OBJETIVO:
+Peso: 78 kg
+TA: 115/75 mmHg
+FC: 71 lpm
+Examen físico: Abdomen blando, depresible, no doloroso. Ruidos cardiacos normales.
+
+ANÁLISIS:
+Control General estable.
+Riesgo cardiovascular: Bajo.
+
+PLAN:
+1. Continuar con medicación actual.
+2. Ajustar dieta: reducir carbohidratos y sal.
+3. Actividad física: caminar 30 min diarios.
+4. Control en 6 meses con laboratorios nuevos.
+
+Firma:
+Dr. Lucía Camps Cantero
+Matrícula: 77060

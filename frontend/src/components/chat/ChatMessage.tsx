@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import ReactMarkdown from 'react-markdown'
 import DocumentModal from './DocumentModal'
 
 export type ChatReference = {
@@ -68,18 +69,37 @@ export default function ChatMessage({ role, content, references }: { role: 'user
           </div>
           
           {/* Content */}
-          <div style={{
+          <div
+            style={{
             whiteSpace: 'pre-wrap',
             lineHeight: 1.6,
             fontSize: '15px',
             color: isUser ? 'var(--text-main)' : 'var(--text-main)',
-            letterSpacing: '0.01em'
-          }}>
+              letterSpacing: '0.01em',
+            }}
+          >
+            {isUser ? (
+              content
+            ) : (
+              <ReactMarkdown
+                components={{
+                  strong: ({ children }) => (
+                    <strong style={{ fontWeight: 600 }}>{children}</strong>
+                  ),
+                  p: ({ children }) => <p style={{ margin: '0 0 0.75em 0' }}>{children}</p>,
+                  ul: ({ children }) => (
+                    <ul style={{ paddingLeft: '1.2em', margin: '0 0 0.75em 0' }}>{children}</ul>
+                  ),
+                  li: ({ children }) => <li style={{ marginBottom: '0.25em' }}>{children}</li>,
+                }}
+              >
             {content}
+              </ReactMarkdown>
+            )}
           </div>
           
           {/* References */}
-          {!!references?.length && (
+        {!!references?.length && (
             <div style={{ marginTop: 20 }}>
               <div style={{
                 display: 'grid',
@@ -107,7 +127,7 @@ export default function ChatMessage({ role, content, references }: { role: 'user
                       e.currentTarget.style.borderColor = 'var(--border-light)'
                       e.currentTarget.style.background = 'rgba(0,0,0,0.2)'
                     }}
-                  >
+                    >
                     <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
                       <span style={{ color: 'var(--primary)', fontWeight: 600 }}>REF {i + 1}</span>
                       {r.score && <span style={{ color: 'var(--text-muted)' }}>{Math.round(r.score * 100)}% Match</span>}
@@ -118,11 +138,11 @@ export default function ChatMessage({ role, content, references }: { role: 'user
                     <div style={{ color: 'var(--text-muted)', fontStyle: 'italic', height: '36px', overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>
                       {r.snippet}
                     </div>
-                  </div>
-                ))}
+                        </div>
+              ))}
               </div>
-            </div>
-          )}
+          </div>
+        )}
         </div>
       </div>
 

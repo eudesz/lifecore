@@ -1,0 +1,29 @@
+FECHA: 2020-07-09
+PACIENTE: Alexander Doe
+MOTIVO DE CONSULTA: Control rutinario Lumbago Crónico
+
+SUBJETIVO:
+Paciente de 45 años acude a control. Refiere sed aumentada.
+Nivel de estrés: 8/10. 
+Adherencia a medicación: Regular.
+Cambios en dieta: Comiendo fuera seguido.
+
+OBJETIVO:
+Peso: 93 kg
+TA: 139/89 mmHg
+FC: 76 lpm
+Examen físico: Abdomen blando, depresible, no doloroso. Ruidos cardiacos normales.
+
+ANÁLISIS:
+Lumbago Crónico estable.
+Riesgo cardiovascular: Bajo.
+
+PLAN:
+1. Continuar con medicación actual.
+2. Ajustar dieta: reducir carbohidratos y sal.
+3. Actividad física: caminar 30 min diarios.
+4. Control en 6 meses con laboratorios nuevos.
+
+Firma:
+Dr. Natalio Torres Carretero
+Matrícula: 51878

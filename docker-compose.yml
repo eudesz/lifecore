@@ -1,41 +1,15 @@
-version: '3.9'
-services:
-  backend:
-    build: ./backend
-    ports:
-      - "8000:8000"
-    environment:
-      - DJANGO_DEBUG=true
-      - DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1
-      - SECURE_SSL_REDIRECT=false
-      - DJANGO_API_KEY=dev-secret-key
-    volumes:
-      - ./backend:/app
-    command: bash -lc "python3 manage.py migrate --settings=project.settings && python3 manage.py runserver 0.0.0.0:8000 --settings=project.settings"
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/api/agents/v2/status"]
-      interval: 15s
-      timeout: 5s
-      retries: 10
-      start_period: 20s
+version: '3.8'
 
-  frontend:
-    build:
-      context: ./frontend
+services:
+  neo4j:
+    image: neo4j:5.15.0
+    container_name: quantia_graph
     ports:
-      - "3000:3000"
+      - "7474:7474" # HTTP
+      - "7687:7687" # Bolt
     environment:
-      - NEXT_PUBLIC_PLATFORM_BACKEND_ORIGIN=http://backend:8000
-      - NEXT_PUBLIC_PLATFORM_API_KEY=dev-secret-key
-      - NODE_ENV=development
-      - PORT=3000
-    command: bash -lc "npm ci || npm install && npm run dev"
-    depends_on:
-      backend:
-        condition: service_healthy
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000"]
-      interval: 15s
-      timeout: 5s
-      retries: 10
-      start_period: 30s
+      - NEO4J_AUTH=neo4j/quantia_secret_password
+      - NEO4J_PLUGINS=["apoc", "graph-data-science"]
+    volumes:
+      - ./neo4j_data:/data
+      - ./neo4j_logs:/logs

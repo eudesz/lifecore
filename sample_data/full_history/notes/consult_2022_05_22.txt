@@ -1,0 +1,29 @@
+FECHA: 2022-05-22
+PACIENTE: Alexander Doe
+MOTIVO DE CONSULTA: Control rutinario Diabetes Tipo 2
+
+SUBJETIVO:
+Paciente de 47 años acude a control. Refiere fatiga ocasional.
+Nivel de estrés: 7/10. 
+Adherencia a medicación: Mala.
+Cambios en dieta: Comiendo fuera seguido.
+
+OBJETIVO:
+Peso: 92 kg
+TA: 128/85 mmHg
+FC: 78 lpm
+Examen físico: Abdomen blando, depresible, no doloroso. Ruidos cardiacos normales.
+
+ANÁLISIS:
+Diabetes Tipo 2 mal controlado.
+Riesgo cardiovascular: Moderado.
+
+PLAN:
+1. Continuar con medicación actual.
+2. Ajustar dieta: reducir carbohidratos y sal.
+3. Actividad física: caminar 30 min diarios.
+4. Control en 6 meses con laboratorios nuevos.
+
+Firma:
+Dr. Graciela Millán Estévez
+Matrícula: 76463

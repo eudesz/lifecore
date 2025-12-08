@@ -18,7 +18,7 @@ export default function Navbar() {
       <div className="navbar-row" style={{ justifyContent: 'center', width: '100%' }}>
         <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none' }}>
           <img src="/quantia-logo.svg" alt="QuantIA" width={28} height={28} />
-          <span className="text-gradient" style={{ fontWeight: 700, fontSize: '18px', fontFamily: 'Playfair Display, serif' }}>QuantIA</span>
+          <span className="text-gradient" style={{ fontWeight: 700, fontSize: '18px', fontFamily: 'Roboto, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif' }}>QuantIA</span>
         </Link>
       </div>
     </header>

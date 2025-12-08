@@ -21,7 +21,7 @@ export default function WelcomeMessage({
   onPromptClick,
 }: WelcomeMessageProps) {
   const [showIntro, setShowIntro] = useState(false)
-  
+
   useEffect(() => {
     setShowIntro(false)
   }, [])
@@ -50,7 +50,7 @@ export default function WelcomeMessage({
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             letterSpacing: '-0.03em',
-            fontFamily: 'Playfair Display, serif'
+            fontFamily: 'Roboto, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif'
           }}
         >
           Hello, {username}
@@ -107,10 +107,10 @@ export default function WelcomeMessage({
               
               <div>
                 <div style={{ fontSize: '15px', fontWeight: 600, color: 'var(--text-main)', marginBottom: '6px', lineHeight: 1.4 }}>
-                  {prompt.prompt}
-                </div>
+                    {prompt.prompt}
+                  </div>
                 <div style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
-                  {prompt.insight}
+                    {prompt.insight}
                 </div>
               </div>
             </button>

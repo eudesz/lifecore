@@ -1,0 +1,29 @@
+FECHA: 2024-08-26
+PACIENTE: Alexander Doe
+MOTIVO DE CONSULTA: Control rutinario Diabetes Tipo 2
+
+SUBJETIVO:
+Paciente de 49 años acude a control. Refiere sed aumentada.
+Nivel de estrés: 3/10. 
+Adherencia a medicación: Mala.
+Cambios en dieta: Comiendo fuera seguido.
+
+OBJETIVO:
+Peso: 95 kg
+TA: 127/88 mmHg
+FC: 79 lpm
+Examen físico: Abdomen blando, depresible, no doloroso. Ruidos cardiacos normales.
+
+ANÁLISIS:
+Diabetes Tipo 2 estable.
+Riesgo cardiovascular: Moderado.
+
+PLAN:
+1. Continuar con medicación actual.
+2. Ajustar dieta: reducir carbohidratos y sal.
+3. Actividad física: caminar 30 min diarios.
+4. Control en 6 meses con laboratorios nuevos.
+
+Firma:
+Dr. Manola Cases Guillén
+Matrícula: 74879

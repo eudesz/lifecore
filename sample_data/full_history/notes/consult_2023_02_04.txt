@@ -1,0 +1,29 @@
+FECHA: 2023-02-04
+PACIENTE: Alexander Doe
+MOTIVO DE CONSULTA: Control rutinario Diabetes Tipo 2
+
+SUBJETIVO:
+Paciente de 48 años acude a control. Refiere sed aumentada.
+Nivel de estrés: 6/10. 
+Adherencia a medicación: Regular.
+Cambios en dieta: No.
+
+OBJETIVO:
+Peso: 92 kg
+TA: 141/76 mmHg
+FC: 77 lpm
+Examen físico: Abdomen blando, depresible, no doloroso. Ruidos cardiacos normales.
+
+ANÁLISIS:
+Diabetes Tipo 2 estable.
+Riesgo cardiovascular: Moderado.
+
+PLAN:
+1. Continuar con medicación actual.
+2. Ajustar dieta: reducir carbohidratos y sal.
+3. Actividad física: caminar 30 min diarios.
+4. Control en 6 meses con laboratorios nuevos.
+
+Firma:
+Dr. Ana del Zapata
+Matrícula: 15393

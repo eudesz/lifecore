@@ -39,21 +39,21 @@ export default function Index() {
             }}>
               The Future of Health Intelligence
             </div>
-            
-            <h1 style={{
+          
+          <h1 style={{
               fontSize: 'clamp(3rem, 6vw, 5rem)',
               lineHeight: 1.1,
               marginBottom: '24px',
               background: 'linear-gradient(135deg, #fff 0%, #94a3b8 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              fontFamily: 'Playfair Display, serif'
-            }}>
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+              fontFamily: 'Roboto, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif'
+          }}>
               Your Health Data,<br />
               <span style={{ color: 'var(--primary)', WebkitTextFillColor: 'var(--primary)' }}>Decoded by AI.</span>
-            </h1>
-            
-            <p style={{
+          </h1>
+          
+          <p style={{
               fontSize: 'clamp(1.1rem, 2vw, 1.3rem)',
               color: 'var(--text-muted)',
               marginBottom: '40px',
@@ -61,32 +61,49 @@ export default function Index() {
               marginLeft: 'auto',
               marginRight: 'auto',
               lineHeight: 1.6
-            }}>
+          }}>
               Connect your biometric streams, analyze decades of history, and receive clinical-grade insights in seconds.
-            </p>
-            
+          </p>
+          <p
+            style={{
+              fontSize: '0.95rem',
+              color: 'var(--text-muted)',
+              marginBottom: '32px',
+              maxWidth: '720px',
+              marginLeft: 'auto',
+              marginRight: 'auto',
+              lineHeight: 1.6,
+            }}
+          >
+            Ask the assistant any type of question about your health data —{' '}
+            <strong>descriptive</strong>, <strong>exploratory</strong>,{' '}
+            <strong>inferential</strong>, <strong>predictive</strong>,{' '}
+            <strong>causal</strong>, or <strong>deterministic</strong> — and it will
+            respond in clear, human language, tailored to your level of expertise.
+          </p>
+
             <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}>
-              <button
-                onClick={() => setShowUserSelector(true)}
+            <button
+              onClick={() => setShowUserSelector(true)}
                 className="btn"
-                style={{
+              style={{
                   background: 'var(--primary)',
                   color: '#000',
-                  border: 'none',
+                border: 'none',
                   padding: '16px 40px',
                   fontSize: '16px',
                   fontWeight: 600,
                   boxShadow: '0 0 30px rgba(0, 242, 234, 0.3)'
-                }}
-              >
-                Launch Platform
-              </button>
+              }}
+            >
+                Login
+            </button>
               <button
                 className="btn secondary"
-                style={{
+              style={{
                   padding: '16px 40px',
                   fontSize: '16px'
-                }}
+              }}
               >
                 View Demo
               </button>
@@ -101,10 +118,10 @@ export default function Index() {
               <h2 style={{ fontSize: '32px', marginBottom: '16px' }}>Engineered for Longevity</h2>
               <p style={{ color: 'var(--text-muted)' }}>A complete operating system for your biological data.</p>
             </div>
-            
-            <div style={{ 
-              display: 'grid', 
-              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', 
+
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
               gap: '30px' 
             }}>
               {[

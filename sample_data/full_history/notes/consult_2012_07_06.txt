@@ -1,0 +1,24 @@
+FECHA: 2012-07-06
+URGENCIA
+PACIENTE: Alexander Doe
+MOTIVO: Cefalea intensa
+
+SUBJETIVO:
+Paciente refiere inicio de síntomas hace 48hs. Dolor intensidad 7/10.
+
+OBJETIVO:
+TA: 147/91 mmHg
+Temp: 37.5 C
+SatO2: 98%
+
+ANÁLISIS:
+Cuadro compatible con infección viral estacional. Se descartan complicaciones mayores.
+
+PLAN:
+1. Reposo 48hs.
+2. Paracetamol 500mg c/8hs si dolor/fiebre.
+3. Hidratación abundante.
+
+Firma:
+Dr. Eligio Albert Lopez Mateo
+Matrícula: 40911

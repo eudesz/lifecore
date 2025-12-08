@@ -127,7 +127,7 @@ def analyze_user_health_profile(user_id: int) -> Dict[str, Any]:
             'insight': 'Análisis detallado de glucosa',
             'score': 0.75
         })
-
+    
     # Priorizar y limitar
     profile['intelligent_prompts'] = prioritize_prompts(all_prompts, max_prompts=8)
     
@@ -172,16 +172,5 @@ def prioritize_prompts(prompts: List[Dict[str, Any]], max_prompts: int = 10) -> 
     return valid_prompts[:max_prompts]
 
 
-if __name__ == '__main__':
-    # Test con demo-alex
-    print("Analizando perfil de demo-alex...")
-    # Asumiendo ID 8 para el usuario sintético creado recientemente, o 5 para demo anterior
-    try:
-        profile = analyze_user_health_profile(8) 
-        print(f"\n=== PERFIL DE {profile['username'].upper()} ===")
-        print("\n=== PROMPTS INTELIGENTES ===")
-        for i, p in enumerate(profile['intelligent_prompts'], 1):
-            print(f"\n{i}. {p['emoji']} {p['prompt']}")
-            print(f"   [{p['priority'].upper()}] {p['insight']}")
-    except Exception as e:
-        print(f"Error testing: {e}")
+# Nota: El bloque de ejecución directa (__main__) se eliminó para evitar problemas de indentación
+# y porque no es necesario en el entorno de servidor de Django.

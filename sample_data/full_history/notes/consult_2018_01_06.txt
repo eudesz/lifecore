@@ -1,0 +1,29 @@
+FECHA: 2018-01-06
+PACIENTE: Alexander Doe
+MOTIVO DE CONSULTA: Control rutinario Dislipidemia
+
+SUBJETIVO:
+Paciente de 43 años acude a control. Refiere dolor de espalda leve.
+Nivel de estrés: 5/10. 
+Adherencia a medicación: Regular.
+Cambios en dieta: Comiendo fuera seguido.
+
+OBJETIVO:
+Peso: 90 kg
+TA: 134/76 mmHg
+FC: 73 lpm
+Examen físico: Abdomen blando, depresible, no doloroso. Ruidos cardiacos normales.
+
+ANÁLISIS:
+Dislipidemia mal controlado.
+Riesgo cardiovascular: Bajo.
+
+PLAN:
+1. Continuar con medicación actual.
+2. Ajustar dieta: reducir carbohidratos y sal.
+3. Actividad física: caminar 30 min diarios.
+4. Control en 6 meses con laboratorios nuevos.
+
+Firma:
+Dr. Emma Arregui-Mendoza
+Matrícula: 32557

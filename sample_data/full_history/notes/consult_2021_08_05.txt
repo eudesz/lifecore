@@ -1,0 +1,29 @@
+FECHA: 2021-08-05
+PACIENTE: Alexander Doe
+MOTIVO DE CONSULTA: Control rutinario Dislipidemia
+
+SUBJETIVO:
+Paciente de 46 años acude a control. Refiere fatiga ocasional.
+Nivel de estrés: 3/10. 
+Adherencia a medicación: Mala.
+Cambios en dieta: No.
+
+OBJETIVO:
+Peso: 95 kg
+TA: 144/85 mmHg
+FC: 69 lpm
+Examen físico: Abdomen blando, depresible, no doloroso. Ruidos cardiacos normales.
+
+ANÁLISIS:
+Dislipidemia estable.
+Riesgo cardiovascular: Moderado.
+
+PLAN:
+1. Continuar con medicación actual.
+2. Ajustar dieta: reducir carbohidratos y sal.
+3. Actividad física: caminar 30 min diarios.
+4. Control en 6 meses con laboratorios nuevos.
+
+Firma:
+Dr. Tere Peinado Gallardo
+Matrícula: 95012

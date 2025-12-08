@@ -1,0 +1,29 @@
+FECHA: 2025-08-28
+PACIENTE: Alexander Doe
+MOTIVO DE CONSULTA: Control rutinario Hipertensión Arterial
+
+SUBJETIVO:
+Paciente de 50 años acude a control. Refiere sentirse bien.
+Nivel de estrés: 4/10. 
+Adherencia a medicación: Buena.
+Cambios en dieta: Comiendo fuera seguido.
+
+OBJETIVO:
+Peso: 91 kg
+TA: 133/85 mmHg
+FC: 75 lpm
+Examen físico: Abdomen blando, depresible, no doloroso. Ruidos cardiacos normales.
+
+ANÁLISIS:
+Hipertensión Arterial estable.
+Riesgo cardiovascular: Moderado.
+
+PLAN:
+1. Continuar con medicación actual.
+2. Ajustar dieta: reducir carbohidratos y sal.
+3. Actividad física: caminar 30 min diarios.
+4. Control en 6 meses con laboratorios nuevos.
+
+Firma:
+Dr. Josep Soto Hidalgo
+Matrícula: 72966

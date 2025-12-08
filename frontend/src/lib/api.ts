@@ -114,6 +114,22 @@ export async function getIntelligentPrompts(userId: string): Promise<Intelligent
   const res = await fetch(`/api/prompts/intelligent?user_id=${userId}`, {
     headers: key ? { Authorization: `Bearer ${key}` } : undefined,
   })
+  // Graceful handling of rate limiting or backend overload so the UI doesn't crash
+  if (res.status === 429) {
+    console.warn('Intelligent prompts endpoint rate-limited (HTTP 429). Falling back to empty prompts.')
+    const uid = Number(userId) || 0
+    return {
+      user_id: uid,
+      username: `user_${uid || 'demo'}`,
+      categories: [],
+      intelligent_prompts: [],
+      summary: {
+        total_categories: 0,
+        total_observations: 0,
+        total_documents: 0,
+      },
+    }
+  }
   if (!res.ok) throw new Error(`HTTP ${res.status}`)
   return res.json()
 }

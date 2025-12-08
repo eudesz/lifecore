@@ -16,6 +16,7 @@ from .vectorstore_faiss import FaissVectorStore
 from .intelligent_prompts import analyze_user_health_profile
 from .treatment_models import Treatment, TreatmentLog, TreatmentProgress
 from .models import Condition, EventCondition
+from .graph_db import GraphDB
 
 User = get_user_model()
 
@@ -421,6 +422,7 @@ def timeline_advanced(request):
                 'description': (d.content or '')[:200] + '...',
                 'metrics': {},
                 'related_conditions': [],
+                'document_id': d.id,
             })
 
     # Process Treatments -> Events
@@ -436,6 +438,52 @@ def timeline_advanced(request):
                 'description': f"{t.medication_type} - {t.dosage} {t.frequency}. Estado: {t.status}",
                 'metrics': {},
                 'related_conditions': [t.condition] if t.condition else [],
+            })
+
+    # Process Observations as synthetic timeline points (biometrics / labs)
+    # Only when not filtering by specific conditions to avoid ruido
+    if not conditions:
+        obs_qs = Observation.objects.filter(user_id=user_id)
+        if date_from:
+            obs_qs = obs_qs.filter(taken_at__gte=date_from)
+        if date_to:
+            obs_qs = obs_qs.filter(taken_at__lte=date_to)
+
+        # Group observations by day and simple category
+        BUCKET_KEYS_LAB = {'cbc_hb', 'cbc_wbc', 'crp', 'creatinine', 'urine_protein', 'stool_occult_blood', 'proteinuria_24h'}
+        BUCKET_KEYS_BIOMETRIC = {'weight', 'systolic_bp', 'glucose', 'steps_daily_avg', 'resting_hr', 'sleep_hours', 'sleep_score'}
+
+        daily_buckets: Dict[tuple, Dict[str, Any]] = {}
+        for o in obs_qs.order_by('taken_at')[:2000]:
+            dt_day = o.taken_at.date()
+            if o.code in BUCKET_KEYS_LAB:
+                cat = 'lab'
+            elif o.code in BUCKET_KEYS_BIOMETRIC:
+                cat = 'biometric'
+            else:
+                continue
+            if categories and cat not in categories:
+                continue
+            key = (dt_day.isoformat(), cat)
+            bucket = daily_buckets.setdefault(key, {'date': o.taken_at, 'category': cat, 'metrics': {}})
+            bucket['date'] = o.taken_at  # last one of the day
+            bucket['metrics'][o.code] = float(o.value)
+
+        for (day, cat), bucket in daily_buckets.items():
+            metrics = bucket['metrics']
+            title = 'Biometric snapshot' if cat == 'biometric' else 'Lab snapshot'
+            desc = f"{len(metrics)} measurements recorded."
+            events_out.append({
+                'id': f'obs_{cat}_{day}',
+                'date': bucket['date'].isoformat(),
+                'kind': f'observation.{cat}',
+                'category': cat,
+                'severity': None,
+                'title': title,
+                'description': desc,
+                'metrics': metrics,
+                'related_conditions': [],
+                'document_id': None,
             })
 
     # Sort all events by date
@@ -493,7 +541,11 @@ def conditions_list(request):
         counts[cid] = counts.get(cid, 0) + 1
     payload = []
     for c in Condition.objects.all():
-        payload.append({'slug': c.slug, 'name': c.name, 'color': c.color, 'count': counts.get(c.id, 0)})
+        count = counts.get(c.id, 0)
+        # Only expose conditions that actually appear in this user's timeline
+        if count <= 0:
+            continue
+        payload.append({'slug': c.slug, 'name': c.name, 'color': c.color, 'count': count})
     return JsonResponse({'conditions': payload})
 
 
@@ -957,42 +1009,6 @@ def audit_list(request):
 def prompts_intelligent(request):
     """
     Endpoint para obtener prompts inteligentes personalizados.
-    
-    GET /api/prompts/intelligent?user_id=X
-    
-    Response:
-    {
-        "user_id": 5,
-        "username": "demo-alex",
-        "categories": [
-            {
-                "code": "glucose",
-                "emoji": "🩸",
-                "label": "Glucosa",
-                "count": 30,
-                "status": "neutral",
-                "last_update": "2025-11-07T12:00:00Z"
-            },
-            ...
-        ],
-        "intelligent_prompts": [
-            {
-                "prompt": "¿Cómo ha evolucionado mi glucosa en los últimos 30 días?",
-                "category": "glucose",
-                "type": "temporal",
-                "priority": "medium",
-                "emoji": "🩸",
-                "insight": "Promedio: 124.1 mg/dL",
-                "score": 0.8
-            },
-            ...
-        ],
-        "summary": {
-            "total_categories": 6,
-            "total_observations": 102,
-            "total_documents": 163
-        }
-    }
     """
     user_id = request.GET.get('user_id')
     if not user_id:
@@ -1036,3 +1052,100 @@ def prompts_intelligent(request):
     except Exception as e:
         return JsonResponse({'error': f'Server error: {str(e)}'}, status=500)
 
+@csrf_exempt
+@require_http_methods(["GET"])
+@require_api_key
+def graph_data(request):
+    """
+    Endpoint for Knowledge Graph visualization.
+    Returns nodes and links from Neo4j.
+    """
+    user_id = request.GET.get('user_id')
+    if not user_id:
+        return JsonResponse({'error': 'user_id is required'}, status=400)
+    
+    scope_err = _assert_user_scope(request, user_id)
+    if scope_err:
+        return scope_err
+
+    driver = GraphDB.get_driver()
+    if not driver:
+        # Graceful fallback: empty graph if Neo4j is down
+        return JsonResponse({'nodes': [], 'links': []})
+
+    with driver.session() as session:
+        # Fetch Patient and all 1st degree connections
+        # Plus connections between those neighbors (triangles)
+        result = session.run("""
+            MATCH (p:Patient {id: $uid})-[r1]-(n)
+            OPTIONAL MATCH (n)-[r2]-(m)
+            WHERE (p)-[]-(m) OR m.id = $uid
+            RETURN 
+                id(p) as source_id, labels(p) as source_labels, properties(p) as source_props,
+                id(n) as target_id, labels(n) as target_labels, properties(n) as target_props,
+                type(r1) as rel_type, id(r1) as rel_id
+            UNION
+            MATCH (p:Patient {id: $uid})-[r1]-(n)-[r2]-(m)
+            RETURN
+                id(n) as source_id, labels(n) as source_labels, properties(n) as source_props,
+                id(m) as target_id, labels(m) as target_labels, properties(m) as target_props,
+                type(r2) as rel_type, id(r2) as rel_id
+            LIMIT 1000
+        """, uid=int(user_id))
+        
+        nodes_dict = {}
+        links_list = []
+        
+        for record in result:
+            s_id = str(record['source_id'])
+            t_id = str(record['target_id'])
+            
+            # Process Source Node
+            if s_id not in nodes_dict:
+                lbls = record['source_labels']
+                props = record['source_props']
+                label = "Unknown"
+                if 'Patient' in lbls: label = props.get('name', 'Patient')
+                elif 'Condition' in lbls: label = props.get('name', 'Condition')
+                elif 'Medication' in lbls: label = props.get('name', 'Medication')
+                elif 'Document' in lbls: label = props.get('title', 'Document')
+                elif 'Event' in lbls: label = props.get('title', 'Event')
+                
+                nodes_dict[s_id] = {
+                    'id': s_id,
+                    'group': lbls[0] if lbls else 'Generic',
+                    'label': label,
+                    'val': 20 if 'Patient' in lbls else 10,
+                    'properties': props  # Pass all Neo4j properties to frontend
+                }
+            
+            # Process Target Node
+            if t_id not in nodes_dict:
+                lbls = record['target_labels']
+                props = record['target_props']
+                label = "Unknown"
+                if 'Patient' in lbls: label = props.get('name', 'Patient')
+                elif 'Condition' in lbls: label = props.get('name', 'Condition')
+                elif 'Medication' in lbls: label = props.get('name', 'Medication')
+                elif 'Document' in lbls: label = props.get('title', 'Document')
+                elif 'Event' in lbls: label = props.get('title', 'Event')
+                
+                nodes_dict[t_id] = {
+                    'id': t_id,
+                    'group': lbls[0] if lbls else 'Generic',
+                    'label': label,
+                    'val': 10,
+                    'properties': props  # Pass all Neo4j properties to frontend
+                }
+
+            # Link
+            links_list.append({
+                'source': s_id,
+                'target': t_id,
+                'label': record['rel_type']
+            })
+
+    return JsonResponse({
+        'nodes': list(nodes_dict.values()), 
+        'links': links_list
+    })

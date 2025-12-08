@@ -1,0 +1,29 @@
+FECHA: 2022-03-28
+PACIENTE: Alexander Doe
+MOTIVO DE CONSULTA: Control rutinario Dislipidemia
+
+SUBJETIVO:
+Paciente de 47 años acude a control. Refiere fatiga ocasional.
+Nivel de estrés: 7/10. 
+Adherencia a medicación: Buena.
+Cambios en dieta: No.
+
+OBJETIVO:
+Peso: 88 kg
+TA: 135/91 mmHg
+FC: 83 lpm
+Examen físico: Abdomen blando, depresible, no doloroso. Ruidos cardiacos normales.
+
+ANÁLISIS:
+Dislipidemia mal controlado.
+Riesgo cardiovascular: Moderado.
+
+PLAN:
+1. Continuar con medicación actual.
+2. Ajustar dieta: reducir carbohidratos y sal.
+3. Actividad física: caminar 30 min diarios.
+4. Control en 6 meses con laboratorios nuevos.
+
+Firma:
+Dr. Dimas Costa
+Matrícula: 68262

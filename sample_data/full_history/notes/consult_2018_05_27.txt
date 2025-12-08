@@ -1,0 +1,29 @@
+FECHA: 2018-05-27
+PACIENTE: Alexander Doe
+MOTIVO DE CONSULTA: Control rutinario Hipertensión Arterial
+
+SUBJETIVO:
+Paciente de 43 años acude a control. Refiere sentirse bien.
+Nivel de estrés: 5/10. 
+Adherencia a medicación: Mala.
+Cambios en dieta: Comiendo fuera seguido.
+
+OBJETIVO:
+Peso: 91 kg
+TA: 125/95 mmHg
+FC: 67 lpm
+Examen físico: Abdomen blando, depresible, no doloroso. Ruidos cardiacos normales.
+
+ANÁLISIS:
+Hipertensión Arterial mal controlado.
+Riesgo cardiovascular: Bajo.
+
+PLAN:
+1. Continuar con medicación actual.
+2. Ajustar dieta: reducir carbohidratos y sal.
+3. Actividad física: caminar 30 min diarios.
+4. Control en 6 meses con laboratorios nuevos.
+
+Firma:
+Dr. David Carbajo Durán
+Matrícula: 50454

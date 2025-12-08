@@ -1,0 +1,29 @@
+FECHA: 2023-07-10
+PACIENTE: Alexander Doe
+MOTIVO DE CONSULTA: Control rutinario Dislipidemia
+
+SUBJETIVO:
+Paciente de 48 años acude a control. Refiere sentirse bien.
+Nivel de estrés: 5/10. 
+Adherencia a medicación: Regular.
+Cambios en dieta: No.
+
+OBJETIVO:
+Peso: 91 kg
+TA: 128/79 mmHg
+FC: 78 lpm
+Examen físico: Abdomen blando, depresible, no doloroso. Ruidos cardiacos normales.
+
+ANÁLISIS:
+Dislipidemia estable.
+Riesgo cardiovascular: Moderado.
+
+PLAN:
+1. Continuar con medicación actual.
+2. Ajustar dieta: reducir carbohidratos y sal.
+3. Actividad física: caminar 30 min diarios.
+4. Control en 6 meses con laboratorios nuevos.
+
+Firma:
+Dr. Martín Bertrán-Velasco
+Matrícula: 95498

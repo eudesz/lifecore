@@ -1,8 +1,3 @@
-# General
-.DS_Store
-*.log
-.logs/
-
 # Python
 __pycache__/
 *.py[cod]
@@ -10,23 +5,28 @@ __pycache__/
 venv/
 env/
 .env
-db.sqlite3
-*.sqlite3
 
-# Node / Frontend
+# JavaScript/Node
 node_modules/
 .next/
-out/
-build/
 dist/
-.npm/
-*.local
+coverage/
 
-# Editor
+# IDEs
 .vscode/
 .idea/
 *.swp
-.cursor/
+.DS_Store
 
-# Project Specific
-sample_data/full_history/
+# Logs
+*.log
+neo4j_logs/
+
+# Data
+db.sqlite3
+var/
+neo4j_data/
+
+# Temporary
+test_created.txt
+test_results.txt

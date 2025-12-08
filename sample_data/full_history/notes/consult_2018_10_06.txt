@@ -1,0 +1,29 @@
+FECHA: 2018-10-06
+PACIENTE: Alexander Doe
+MOTIVO DE CONSULTA: Control rutinario Obesidad Grado 1
+
+SUBJETIVO:
+Paciente de 43 años acude a control. Refiere sentirse bien.
+Nivel de estrés: 8/10. 
+Adherencia a medicación: Buena.
+Cambios en dieta: Intentando reducir harinas.
+
+OBJETIVO:
+Peso: 89 kg
+TA: 134/85 mmHg
+FC: 83 lpm
+Examen físico: Abdomen blando, depresible, no doloroso. Ruidos cardiacos normales.
+
+ANÁLISIS:
+Obesidad Grado 1 estable.
+Riesgo cardiovascular: Bajo.
+
+PLAN:
+1. Continuar con medicación actual.
+2. Ajustar dieta: reducir carbohidratos y sal.
+3. Actividad física: caminar 30 min diarios.
+4. Control en 6 meses con laboratorios nuevos.
+
+Firma:
+Dr. Cristina Gonzalo Porta
+Matrícula: 81069

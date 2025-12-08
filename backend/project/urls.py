@@ -66,6 +66,7 @@ urlpatterns = [
     path('api/lifecore/treatments/list', lifecore_views.treatments_list),
     path('api/lifecore/treatments/adherence', lifecore_views.treatments_adherence),
     path('api/lifecore/conditions/list', lifecore_views.conditions_list),  # GET
+    path('api/lifecore/graph', lifecore_views.graph_data), # GET (Knowledge Graph)
     path('api/lifecore/doctor-links', lifecore_views.doctor_links_list),  # GET
     path('api/lifecore/doctor-links/revoke', lifecore_views.doctor_links_revoke),  # POST
     path('api/lifecore/doctor-links/audit', lifecore_views.doctor_links_audit),  # GET
