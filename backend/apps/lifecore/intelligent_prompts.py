@@ -1,7 +1,3 @@
-"""
-Sistema de Generación de Prompts Inteligentes
-Analiza datos del usuario y genera preguntas personalizadas
-"""
 import os
 import sys
 from datetime import datetime, timedelta

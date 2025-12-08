@@ -522,6 +522,91 @@ def calculate_health_score(user_id: int, score_type: str) -> str:
     except Exception as e:
         return f"Error calculating score: {str(e)}"
 
+# --- PHASE 2: LIFESTYLE & WEARABLES TOOLS ---
+
+def analyze_sleep_quality(user_id: int, period: str = '7d') -> str:
+    """
+    Analyzes sleep patterns (hours, quality) over a period.
+    """
+    try:
+        days = 7
+        if period == '30d': days = 30
+        elif period == '90d': days = 90
+        
+        start_date = datetime.now() - timedelta(days=days)
+        
+        qs = Observation.objects.filter(
+            user_id=user_id, 
+            code__in=['sleep_hours', 'sleep_score', 'rem_sleep'],
+            taken_at__gte=start_date
+        ).order_by('taken_at')
+        
+        if not qs.exists():
+            return "No sleep data found for this period."
+            
+        # Agrupar por código
+        data = {}
+        for obs in qs:
+            data.setdefault(obs.code, []).append(obs.value)
+            
+        report = {"period": f"Last {days} days"}
+        
+        if 'sleep_hours' in data:
+            vals = data['sleep_hours']
+            avg = sum(vals) / len(vals)
+            report['avg_hours'] = round(avg, 1)
+            report['consistency'] = "Good" if (max(vals) - min(vals)) < 2 else "Variable"
+            
+        if 'sleep_score' in data:
+            vals = data['sleep_score']
+            report['avg_sleep_score'] = round(sum(vals) / len(vals), 0)
+            
+        return json.dumps(report)
+    except Exception as e:
+        return f"Error analyzing sleep: {str(e)}"
+
+def analyze_wearable_metrics(user_id: int) -> str:
+    """
+    Analyzes advanced wearable metrics like HRV, VO2 Max, Resting Heart Rate.
+    """
+    try:
+        # Fetch latest values for key metrics
+        metrics = ['vo2_max', 'hrv', 'resting_hr']
+        results = {}
+        
+        for m in metrics:
+            obs = Observation.objects.filter(user_id=user_id, code=m).order_by('-taken_at').first()
+            if obs:
+                results[m] = {
+                    "value": obs.value,
+                    "date": obs.taken_at.date().isoformat(),
+                    "status": "Normal" # Placeholder for range logic
+                }
+                
+        if not results:
+            return "No advanced wearable metrics (HRV, VO2 Max) found."
+            
+        return json.dumps(results)
+    except Exception as e:
+        return f"Error analyzing wearables: {str(e)}"
+
+def analyze_nutritional_logs(user_id: int, days: int = 7) -> str:
+    """
+    Analyzes nutritional information from logs or documents.
+    Currently searches for diet-related documents as a proxy.
+    """
+    try:
+        # In a real app, this would query a NutritionLog model.
+        # Here we use RAG to find diet summaries.
+        docs = search_medical_documents(user_id, "diet nutrition calories food log")
+        if "No relevant information" in docs:
+            return "No detailed nutritional logs found. Please upload a diet diary."
+            
+        return f"Nutritional Context found in documents:\n{docs[:500]}..."
+    except Exception as e:
+        return f"Error analyzing nutrition: {str(e)}"
+
+
 # Registry of tools for OpenAI
 AVAILABLE_TOOLS = {
     "get_biometric_data": get_biometric_data,
@@ -535,6 +620,10 @@ AVAILABLE_TOOLS = {
     "analyze_lab_panels": analyze_lab_panels,
     "calculate_risk_scores": calculate_risk_scores,
     "check_drug_interactions": check_drug_interactions,
+    # Phase 2
+    "analyze_sleep_quality": analyze_sleep_quality,
+    "analyze_wearable_metrics": analyze_wearable_metrics,
+    "analyze_nutritional_logs": analyze_nutritional_logs,
 }
 
 TOOL_DEFINITIONS = [
@@ -696,6 +785,47 @@ TOOL_DEFINITIONS = [
                     "new_drug": {"type": "string", "description": "Name of the new drug to check."}
                 },
                 "required": ["new_drug"]
+            }
+        }
+    },
+    # Phase 2 Tools
+    {
+        "type": "function",
+        "function": {
+            "name": "analyze_sleep_quality",
+            "description": "Analyzes sleep patterns and quality over a period.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "period": {"type": "string", "description": "'7d', '30d', '90d'."}
+                },
+                "required": []
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "analyze_wearable_metrics",
+            "description": "Analyzes advanced metrics like HRV, VO2 Max from wearables.",
+            "parameters": {
+                "type": "object",
+                "properties": {},
+                "required": []
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "analyze_nutritional_logs",
+            "description": "Analyzes nutritional habits from logs or documents.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "days": {"type": "integer", "description": "Number of days to analyze."}
+                },
+                "required": []
             }
         }
     }

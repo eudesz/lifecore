@@ -58,7 +58,6 @@ def analyze(payload: Dict[str, Any], request=None) -> Dict[str, Any]:
     history_text = _get_conversation_history(resolved_user_id, conversation_id)
 
     # 4. Agent Execution Loop (ReAct / Tool Calling)
-    # We call the LLM with the user query + tools. It may decide to call a tool or answer directly.
     
     openai_key = os.getenv('OPENAI_API_KEY', '')
     if not openai_key:
@@ -82,6 +81,9 @@ def analyze(payload: Dict[str, Any], request=None) -> Dict[str, Any]:
         9. Analizar paneles de laboratorio (detectar anomalías) -> 'analyze_lab_panels'
         10. Calcular riesgo cardiovascular/diabetes -> 'calculate_risk_scores'
         11. Verificar seguridad de medicamentos -> 'check_drug_interactions'
+        12. Analizar calidad de sueño y descanso -> 'analyze_sleep_quality'
+        13. Analizar métricas avanzadas (HRV, VO2 Max) -> 'analyze_wearable_metrics'
+        14. Consultar hábitos nutricionales o dieta -> 'analyze_nutritional_logs'
 
         Reglas:
         - Si preguntan por ANTECEDENTES (familiares o personales):
@@ -93,6 +95,9 @@ def analyze(payload: Dict[str, Any], request=None) -> Dict[str, Any]:
         - Si preguntan por interpretación de análisis de sangre o "labs", USA 'analyze_lab_panels'.
         - Si preguntan "¿Qué riesgo tengo?" o probabilidades futuras, USA 'calculate_risk_scores'.
         - Si preguntan "¿Puedo tomar X con Y?" o interacciones, USA 'check_drug_interactions'.
+        - Si preguntan por SUEÑO, descanso, insomnio o "cómo dormí", USA 'analyze_sleep_quality'.
+        - Si preguntan por fitness avanzado (VO2, HRV, variabilidad cardiaca, esfuerzo), USA 'analyze_wearable_metrics'.
+        - Si preguntan por DIETA, nutrición, calorías o "qué comí", USA 'analyze_nutritional_logs'.
         - Si preguntan fechas o eventos, USA 'get_clinical_events'.
         - NO inventes datos. Si no hay datos, dilo.
         - Responde en español, profesional y empático.
@@ -103,9 +108,9 @@ def analyze(payload: Dict[str, Any], request=None) -> Dict[str, Any]:
             {"role": "user", "content": f"Contexto previo:\n{history_text}\n\nPregunta actual: {query}"}
         ]
 
-        # First Call: Let LLM decide to use tools
+        # First Call
         completion = openai.chat.completions.create(
-            model="gpt-4o", # Use a strong model for tool calling
+            model="gpt-4o",
             messages=messages,
             tools=TOOL_DEFINITIONS,
             tool_choice="auto"
@@ -118,14 +123,13 @@ def analyze(payload: Dict[str, Any], request=None) -> Dict[str, Any]:
         used_refs = []
 
         if tool_calls:
-            # The model wants to use tools. Execute them.
-            messages.append(response_msg) # Add the assistant's "intent" to messages
+            # The model wants to use tools
+            messages.append(response_msg)
             
             for tool_call in tool_calls:
                 fn_name = tool_call.function.name
                 fn_args = json.loads(tool_call.function.arguments)
                 
-                # Execute tool
                 tool_result = "Error: Tool not found"
                 if fn_name in AVAILABLE_TOOLS:
                     try:
@@ -133,7 +137,6 @@ def analyze(payload: Dict[str, Any], request=None) -> Dict[str, Any]:
                     except Exception as e:
                         tool_result = f"Error executing {fn_name}: {str(e)}"
                 
-                # Append result to messages
                 messages.append({
                     "role": "tool",
                     "tool_call_id": tool_call.id,
@@ -141,14 +144,12 @@ def analyze(payload: Dict[str, Any], request=None) -> Dict[str, Any]:
                     "content": str(tool_result)
                 })
                 
-                # Store reference for UI
                 used_refs.append({
                     'title': f"Tool: {fn_name}",
                     'source': 'System',
                     'snippet': str(tool_result)[:200] + "..."
                 })
 
-            # Second Call: Get final answer based on tool results
             final_completion = openai.chat.completions.create(
                 model="gpt-4o",
                 messages=messages
@@ -156,7 +157,6 @@ def analyze(payload: Dict[str, Any], request=None) -> Dict[str, Any]:
             final_response_text = final_completion.choices[0].message.content
 
         else:
-            # No tools needed, just chat
             final_response_text = response_msg.content
 
         # 5. Save Response & Return
@@ -175,7 +175,6 @@ def analyze(payload: Dict[str, Any], request=None) -> Dict[str, Any]:
         }
 
     except Exception as e:
-        # Fallback in case of critical failure
         print(f"Agent Error: {e}")
         return {'status': 'error', 'final_text': "Lo siento, tuve un problema interno al procesar tu solicitud."}
 
@@ -186,7 +185,7 @@ def _get_conversation_history(user_id: int, conv_id: str) -> str:
             user_id=user_id,
             kind='chat',
             metadata__conv_id=conv_id
-        ).order_by('-occurred_at')[:5] # Last 5 turns
+        ).order_by('-occurred_at')[:5]
         
         history = []
         for ep in reversed(episodes):
